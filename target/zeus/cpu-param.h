@@ -1,0 +1,7 @@
+#pragma once
+
+#define TARGET_LONG_BITS 64
+#define TARGET_PHYS_ADDR_SPACE_BITS 56
+#define TARGET_VIRT_ADDR_SPACE_BITS 56
+
+#define TARGET_PAGE_BITS 14

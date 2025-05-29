@@ -1,0 +1,392 @@
+# MTIA SIMT ISA instructions decoding
+# Auto generated on: 2024-05-06
+#
+
+# Fields:
+
+%opcode     0:10 # main opcode field
+%rd         12:7 # destination register
+%rs1        22:7 # source register 1
+%rs2        32:7 # source register 2
+%rs3        42:7 # source register 3
+%srd        12:5 # Scalar Destination register
+%srs1       22:5 # Scalar source register 1
+%srs2       32:5 # Scalar source register 2
+%srs3       42:5 # Scalar source register 3
+%rd_w       11:8 # destination register
+%rs1_w      21:8 # source register 1
+%rs2_w      31:8 # sourcee register 
+%rs3_w      41:8 # source register 3
+%srd_w      11:6 # Scalar Destination register
+%srs1_w     21:6 # Scalar Source register 1
+%srs2_w     31:6 # Scalar Sourcee register 
+%srs3_w     41:6 # Scalar Source register 3
+%imm32      32:32 # immediate Value 32 bits
+%imm24      32:24 # immediate Value 24 bits
+%imm24at29  29:24 # immediate Value 24 bits
+%imm23_16   11:8 # Upper 8 bits of immediate Value 24 bits
+%imm16      39:16 # immediate Value 16 bits
+%imm8       52:8 # immediate Value  8 bits
+%imm3       32:3 # immediate Value  3 bits
+%cd         10:1 # dest reg operand cache hint
+%c1         19:1 # src1 reg operand cache hint
+%i1         20:1 # src1 reg operand cache invalidate
+%c2         29:1 # src2 reg operand cache hint
+%i2         30:1 # src2 reg operand cache invalidate
+%c3         39:1 # src3 reg operand cache hint
+%i3         40:1 # src3 reg operand cache invalidate
+%n1         49:1 # Negate  src1 reg
+%n2         50:1 # Negate  src2 reg
+%n3         51:1 # Negate  src3 reg
+%gbcf       52:1 # Generate Branch Conditional Flag
+%gbcf_imm   30:1 # Generate Branch Conditional Flag - Duplicate Remove
+%n1_imm     29:1 # Negate  src1 reg
+%gbcf_b30   30:1 # Generate Branch Conditional Flag
+%bcf_b10    10:1 # Use Branch Flag
+%bcf_b29    29:1 # Use Branch Flag
+%bcf_b55    55:1 # Use Branch Flag
+%bcf_b53    53:1 # Use Branch Flag
+%rm         53:3 # Floating Point Rounding Mode
+%dtype_in   56:4 # Floating Point Input Data Type
+%dtype_out  42:4 # Floating Point Output Data Type
+%bf16       56:1 # Indicates floating point format as BF16
+%cdc        61:3 # Check Dependency Counter
+%idc        61:3 # Increment Dependency Counter
+%chints     55:3 # Cache hints
+%mscope     58:3 # Memory scope
+%break_addr 10:48 # Indicates the address to Jump to on hitting a break point
+%ls         63:1 # Indicates if the break point jump address is in Local LS 
+%brtype     10:2 # Branch Type
+%bpc        12:24 # Branch PC
+%rpc        36:24 # Reconvergence PC
+%rpcv       60:1 # Reconvergence PC Valid
+%simrsvd    10:54 # Message data to simulator
+
+# Argument sets:
+
+&rdrs1rs2rs3                 cdc rs3 i3 c3 rs2 i2 c2 rs1 i1 c1 rd cd
+&rdrs1imm                    imm32 rs1 i1 c1 rd cd
+&rdwrs1wimm                  imm32 rs1_w i1 c1 rd_w cd
+&rdwrs1                      cdc rs1 i1 c1 rd_w cd
+&rdwrs1w                     cdc rs1_w i1 c1 rd_w cd
+&rdrs1w                      cdc rs1_w i1 c1 rd cd
+&rdrs1rs2                    cdc rs2 i2 c2 rs1 i1 c1 rd cd
+&rdrs1rs2imm8                cdc imm8 rs2 i2 c2 rs1 i1 c1 rd cd
+&rdrs1wrs2imm8               cdc imm8 rs2 i2 c2 rs1_w i1 c1 rd cd
+&rdrs1rs2rs3_n2n3            cdc n3 n2 rs3 i3 c3 rs2 i2 c2 rs1 i1 c1 rd cd
+&rdwrs1wrs2wrs3w_n2n3        cdc n3 n2 rs3_w i3 c3 rs2_w i2 c2 rs1_w i1 c1 rd_w cd
+&rdwimm                      imm32 rd_w cd
+&rdrs1rs2_n1n2               cdc n2 n1 rs2 i2 c2 rs1 i1 c1 rd cd
+&rdwrs1wrs2w_n1n2            cdc n2 n1 rs2_w i2 c2 rs1_w i1 c1 rd_w cd
+&rdrs1imm_n1                 imm32 n1_imm rs1 i1 c1 rd cd
+&rdwrs1wimm_n1               imm32 n1_imm rs1_w i1 c1 rd_w cd
+&rdimm                       imm32 rd cd
+&rdrs1rs2rs3_n1n2n3          cdc n3 n2 n1 rs3 i3 c3 rs2 i2 c2 rs1 i1 c1 rd cd
+&rdwrs1wrs2wrs3w_n1n2n3      cdc n3 n2 n1 rs3_w i3 c3 rs2_w i2 c2 rs1_w i1 c1 rd_w cd
+&rdrs1wrs2wrs3_n1n2n3        cdc n3 n2 n1 rs3 i3 c3 rs2_w i2 c2 rs1_w i1 c1 rd cd
+&rdwrs1wrs2w_gbcf            cdc gbcf rs2_w i2 c2 rs1_w i1 c1 rd_w cd
+&rdrs1rs2_gbcf               cdc gbcf rs2 i2 c2 rs1 i1 c1 rd cd
+&rdwrs1wimm_gbcf             imm32 gbcf_b30 rs1_w i1 c1 rd_w cd
+&rdrs1imm_gbcf               imm32 gbcf_b30 rs1 i1 c1 rd cd
+&rdrs1rs2w                   cdc rs2_w i2 c2 rs1 i1 c1 rd cd
+&rdwrs1wrs2w                 cdc rs2_w i2 c2 rs1_w i1 c1 rd_w cd
+&rdwrs1wrs2w_dtype           cdc dtype_in rs2_w i2 c2 rs1_w i1 c1 rd_w cd
+&rdrs1rs2_dtype              cdc dtype_in rs2 i2 c2 rs1 i1 c1 rd cd
+&rdwrs1wrs2w_dtype_gbcf      cdc dtype_in gbcf rs2_w i2 c2 rs1_w i1 c1 rd_w cd
+&rdrs1rs2_dtype_gbcf         cdc dtype_in gbcf rs2 i2 c2 rs1 i1 c1 rd cd
+&rdwrs1wrs2wrs3w_n1n3_dtype_rm  cdc dtype_in rm n3 n1 rs3_w i3 c3 rs2_w i2 c2 rs1_w i1 c1 rd_w cd
+&rdwrs1wrs2w_n1n2_dtype_rm   cdc dtype_in rm n2 n1 rs2_w i2 c2 rs1_w i1 c1 rd_w cd
+&rdrs1rs2rs3_n1n3_dtype_rm   cdc dtype_in rm n3 n1 rs3 i3 c3 rs2 i2 c2 rs1 i1 c1 rd cd
+&rdrs1rs2_n1n2_dtype_rm      cdc dtype_in rm n2 n1 rs2 i2 c2 rs1 i1 c1 rd cd
+&rdwrs1wrs2w_n2_dtype_rm     cdc dtype_in rm n2 rs2_w i2 c2 rs1_w i1 c1 rd_w cd
+&rdrs1rs2_n2_dtype_rm        cdc dtype_in rm n2 rs2 i2 c2 rs1 i1 c1 rd cd
+&rdwrs1w_dtype               cdc dtype_in rs1_w i1 c1 rd_w cd
+&rdrs1_dtype                 cdc dtype_in rs1 i1 c1 rd cd
+&rdwrs1w_dido_rm             cdc dtype_in dtype_out rs1_w i1 c1 rd_w cd
+&rdwrs1_dido_rm              cdc dtype_in dtype_out rs1 i1 c1 rd_w cd
+&rdrs1w_dido_rm              cdc dtype_in dtype_out rs1_w i1 c1 rd cd
+&rdrs1_dido_rm               cdc dtype_in dtype_out rs1 i1 c1 rd cd
+&rdwrs1wimm24_dtype_bcf      dtype_in imm24 bcf_b29 rs1_w i1 c1 rd_w cd
+&rdrs1wimm24_dtype_bcf       dtype_in imm24 bcf_b29 rs1_w i1 c1 rd cd
+&rs1wrs2wimm24_dtype_bcf     cdc dtype_in imm16 bcf_b29 rs1_w i1 c1 imm23_16
+&rs1wrs2imm24_dtype_bcf      cdc dtype_in imm16 bcf_b29 rs1_w i1 c1 imm23_16
+&rdwrs1imm24_chints_mscope_bcf  idc mscope chints bcf_b53 imm24at29 rs1 i1 c1 rd_w cd
+&rdrs1imm24_chints_mscope_bcf  idc mscope chints bcf_b53 imm24at29 rs1 i1 c1 rd cd
+&rs1wrs2wimm24_chints_mscope_bcf  cdc mscope chints imm16 rs2_w i2 c2 rs1_w i1 c1 imm23_16 bcf_b10
+&rs1wrs2imm24_chints_mscope_bcf  cdc mscope chints imm16 rs2 i2 c2 rs1_w i1 c1 imm23_16 bcf_b10
+&srdsrs1srs2_n1n2            cdc n2 n1 srs2 srs1 srd
+&srdwsrs1wsrs2w_n1n2         cdc n2 n1 srs2_w srs1_w srd_w
+&rdwrs1w_srs2w_n1n2          cdc n2 n1 srs2_w rs1_w i1 c1 rd_w cd
+&rdrs1_srs2_n1n2             cdc n2 n1 srs2 rs1 i1 c1 rd_w cd
+&rdrs1w_srs2_n1n2            cdc n2 n1 srs2 rs1_w i1 c1 rd cd
+&rdwrs1w_srs2w_dtype_bcf     cdc dtype_in bcf_b53 srs2_w rs1_w i1 c1 rd_w cd
+&rdrs1w_srs2w_dtype_bcf      cdc dtype_in bcf_b53 srs2_w rs1_w i1 c1 rd_w cd
+&rs1wrs2w_srs3w_dtype_bcf    cdc dtype_in bcf_b53 srs3_w rs2_w rs1_w i1 c1 rd_w cd
+&rs1wrs2_srs3w_dtype_bcf     cdc dtype_in bcf_b53 srs3_w srs2 rs1_w i1 c1 rd_w cd
+&rdwrs1_srs2_chints_mscope_bcf  idc mscope chints bcf_b53 srs2 rs1 i1 c1 rd_w cd
+&rdrs1_srs2_chints_mscope_bcf  idc mscope chints bcf_b53 srs2 rs1 i1 c1 rd cd
+&rs1rs2w_srs3_chints_mscope_bcf  idc mscope chints bcf_b53 srs3 rs2_w i2 c2 rs1 i1 c1 rd_w cd
+&rs1rs2_srs3_chints_mscope_bcf  idc mscope chints bcf_b53 srs3 rs2 i2 c2 rs1 i1 c1 rd cd
+&break                       ls break_addr
+&empty                      
+&rs1                         rs1 i1 c1
+&rs1w                        rs1_w i1 c1
+&imm                         imm32
+&imm3                        imm3
+&simrsvd                     simrsvd
+&ctrl                        rpcv rpc bpc brtype
+
+# Formats:
+
+@rdrs1rs2rs3                 cdc:3 ............ rs3:7 . i3:1  c3:1  rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2rs3
+@rdrs1imm                    imm32:32 ... rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1imm
+@rdwrs1wimm                  imm32:32 ... rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wimm
+@rdwrs1                      cdc:3 ................................ rs1:7 . i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1
+@rdwrs1w                     cdc:3 ................................ rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1w
+@rdrs1w                      cdc:3 ................................ rs1_w:8  i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1w
+@rdrs1rs2                    cdc:3 ...................... rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2
+@rdrs1rs2imm8                cdc:3 . imm8:8 ............. rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2imm8
+@rdrs1wrs2imm8               cdc:3 . imm8:8 ............. rs2:7 . i2:1  c2:1  rs1_w:8  i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1wrs2imm8
+@rdrs1rs2rs3_n2n3            cdc:3 ......... n3:1  n2:1 . rs3:7 . i3:1  c3:1  rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2rs3_n2n3
+@rdwrs1wrs2wrs3w_n2n3        cdc:3 ......... n3:1  n2:1 . rs3_w:8  i3:1  c3:1  rs2_w:8  i2:1  c2:1  rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wrs2wrs3w_n2n3
+@rdwimm                      imm32:32 ............. rd_w:8  cd:1 .......... &rdwimm
+@rdrs1rs2_n1n2               cdc:3 .......... n2:1  n1:1 .......... rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2_n1n2
+@rdwrs1wrs2w_n1n2            cdc:3 .......... n2:1  n1:1 .......... rs2_w:8  i2:1  c2:1  rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wrs2w_n1n2
+@rdrs1imm_n1                 imm32:32 .. n1_imm:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1imm_n1
+@rdwrs1wimm_n1               imm32:32 .. n1_imm:1  rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wimm_n1
+@rdimm                       imm32:32 ............. rd:7 . cd:1 .......... &rdimm
+@rdrs1rs2rs3_n1n2n3          cdc:3 ......... n3:1  n2:1  n1:1  rs3:7 . i3:1  c3:1  rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2rs3_n1n2n3
+@rdwrs1wrs2wrs3w_n1n2n3      cdc:3 ......... n3:1  n2:1  n1:1  rs3_w:8  i3:1  c3:1  rs2_w:8  i2:1  c2:1  rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wrs2wrs3w_n1n2n3
+@rdrs1wrs2wrs3_n1n2n3        cdc:3 ......... n3:1  n2:1  n1:1  rs3:7 . i3:1  c3:1  rs2_w:8  i2:1  c2:1  rs1_w:8  i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1wrs2wrs3_n1n2n3
+@rdwrs1wrs2w_gbcf            cdc:3 ........ gbcf:1 ............. rs2_w:8  i2:1  c2:1  rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wrs2w_gbcf
+@rdrs1rs2_gbcf               cdc:3 ........ gbcf:1 ............. rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2_gbcf
+@rdwrs1wimm_gbcf             imm32:32 . gbcf_b30:1 . rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wimm_gbcf
+@rdrs1imm_gbcf               imm32:32 . gbcf_b30:1 . rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1imm_gbcf
+@rdrs1rs2w                   cdc:3 ...................... rs2_w:8  i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2w
+@rdwrs1wrs2w                 cdc:3 ...................... rs2_w:8  i2:1  c2:1  rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wrs2w
+@rdwrs1wrs2w_dtype           cdc:3 . dtype_in:4 ................. rs2_w:8  i2:1  c2:1  rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wrs2w_dtype
+@rdrs1rs2_dtype              cdc:3 . dtype_in:4 ................. rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2_dtype
+@rdwrs1wrs2w_dtype_gbcf      cdc:3 . dtype_in:4 ... gbcf:1 ............. rs2_w:8  i2:1  c2:1  rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wrs2w_dtype_gbcf
+@rdrs1rs2_dtype_gbcf         cdc:3 . dtype_in:4 ... gbcf:1 ............. rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2_dtype_gbcf
+@rdwrs1wrs2wrs3w_n1n3_dtype_rm  cdc:3 . dtype_in:4  rm:3 . n3:1 . n1:1  rs3_w:8  i3:1  c3:1  rs2_w:8  i2:1  c2:1  rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wrs2wrs3w_n1n3_dtype_rm
+@rdwrs1wrs2w_n1n2_dtype_rm   cdc:3 . dtype_in:4  rm:3 .. n2:1  n1:1 .......... rs2_w:8  i2:1  c2:1  rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wrs2w_n1n2_dtype_rm
+@rdrs1rs2rs3_n1n3_dtype_rm   cdc:3 . dtype_in:4  rm:3 . n3:1 . n1:1  rs3:7 . i3:1  c3:1  rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2rs3_n1n3_dtype_rm
+@rdrs1rs2_n1n2_dtype_rm      cdc:3 . dtype_in:4  rm:3 .. n2:1  n1:1 .......... rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2_n1n2_dtype_rm
+@rdwrs1wrs2w_n2_dtype_rm     cdc:3 . dtype_in:4  rm:3 .. n2:1 ........... rs2_w:8  i2:1  c2:1  rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wrs2w_n2_dtype_rm
+@rdrs1rs2_n2_dtype_rm        cdc:3 . dtype_in:4  rm:3 .. n2:1 ........... rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1rs2_n2_dtype_rm
+@rdwrs1w_dtype               cdc:3 . dtype_in:4 ........................... rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1w_dtype
+@rdrs1_dtype                 cdc:3 . dtype_in:4 ........................... rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1_dtype
+@rdwrs1w_dido_rm             cdc:3 . dtype_in:4 .......... dtype_out:4 ............. rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1w_dido_rm
+@rdwrs1_dido_rm              cdc:3 . dtype_in:4 .......... dtype_out:4 ............. rs1:7 . i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1_dido_rm
+@rdrs1w_dido_rm              cdc:3 . dtype_in:4 .......... dtype_out:4 ............. rs1_w:8  i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1w_dido_rm
+@rdrs1_dido_rm               cdc:3 . dtype_in:4 .......... dtype_out:4 ............. rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1_dido_rm
+@rdwrs1wimm24_dtype_bcf     .... dtype_in:4  imm24:24 .. bcf_b29:1  rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1wimm24_dtype_bcf
+@rdrs1wimm24_dtype_bcf      .... dtype_in:4  imm24:24 .. bcf_b29:1  rs1_w:8  i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1wimm24_dtype_bcf
+@rs1wrs2wimm24_dtype_bcf     cdc:3 . dtype_in:4 . imm16:16 ......... bcf_b29:1  rs1_w:8  i1:1  c1:1  imm23_16:8 ........... &rs1wrs2wimm24_dtype_bcf
+@rs1wrs2imm24_dtype_bcf      cdc:3 . dtype_in:4 . imm16:16 ......... bcf_b29:1  rs1_w:8  i1:1  c1:1  imm23_16:8 ........... &rs1wrs2imm24_dtype_bcf
+@rdwrs1imm24_chints_mscope_bcf  idc:3  mscope:3  chints:3 . bcf_b53:1  imm24at29:24  rs1:7 . i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1imm24_chints_mscope_bcf
+@rdrs1imm24_chints_mscope_bcf  idc:3  mscope:3  chints:3 . bcf_b53:1  imm24at29:24  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1imm24_chints_mscope_bcf
+@rs1wrs2wimm24_chints_mscope_bcf  cdc:3  mscope:3  chints:3  imm16:16  rs2_w:8  i2:1  c2:1  rs1_w:8  i1:1  c1:1  imm23_16:8  bcf_b10:1 .......... &rs1wrs2wimm24_chints_mscope_bcf
+@rs1wrs2imm24_chints_mscope_bcf  cdc:3  mscope:3  chints:3  imm16:16  rs2:7 . i2:1  c2:1  rs1_w:8  i1:1  c1:1  imm23_16:8  bcf_b10:1 .......... &rs1wrs2imm24_chints_mscope_bcf
+@srdsrs1srs2_n1n2            cdc:3 .......... n2:1  n1:1 ............ srs2:5 ..... srs1:5 ..... srd:5 ............ &srdsrs1srs2_n1n2
+@srdwsrs1wsrs2w_n1n2         cdc:3 .......... n2:1  n1:1 ............ srs2_w:6 .... srs1_w:6 .... srd_w:6 ........... &srdwsrs1wsrs2w_n1n2
+@rdwrs1w_srs2w_n1n2          cdc:3 .......... n2:1  n1:1 ............ srs2_w:6 .. rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1w_srs2w_n1n2
+@rdrs1_srs2_n1n2             cdc:3 .......... n2:1  n1:1 ............ srs2:5 ... rs1:7 . i1:1  c1:1  rd_w:8  cd:1 .......... &rdrs1_srs2_n1n2
+@rdrs1w_srs2_n1n2            cdc:3 .......... n2:1  n1:1 ............ srs2:5 ... rs1_w:8  i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1w_srs2_n1n2
+@rdwrs1w_srs2w_dtype_bcf     cdc:3 . dtype_in:4 .. bcf_b53:1 ................ srs2_w:6 .. rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1w_srs2w_dtype_bcf
+@rdrs1w_srs2w_dtype_bcf      cdc:3 . dtype_in:4 .. bcf_b53:1 ................ srs2_w:6 .. rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rdrs1w_srs2w_dtype_bcf
+@rs1wrs2w_srs3w_dtype_bcf    cdc:3 . dtype_in:4 .. bcf_b53:1 ...... srs3_w:6 .. rs2_w:8 .. rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rs1wrs2w_srs3w_dtype_bcf
+@rs1wrs2_srs3w_dtype_bcf     cdc:3 . dtype_in:4 .. bcf_b53:1 ...... srs3_w:6 .... srs2:5 ... rs1_w:8  i1:1  c1:1  rd_w:8  cd:1 .......... &rs1wrs2_srs3w_dtype_bcf
+@rdwrs1_srs2_chints_mscope_bcf  idc:3  mscope:3  chints:3 . bcf_b53:1 ................ srs2:5 ... rs1:7 . i1:1  c1:1  rd_w:8  cd:1 .......... &rdwrs1_srs2_chints_mscope_bcf
+@rdrs1_srs2_chints_mscope_bcf  idc:3  mscope:3  chints:3 . bcf_b53:1 ................ srs2:5 ... rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rdrs1_srs2_chints_mscope_bcf
+@rs1rs2w_srs3_chints_mscope_bcf  idc:3  mscope:3  chints:3 . bcf_b53:1 ...... srs3:5 ... rs2_w:8  i2:1  c2:1  rs1:7 . i1:1  c1:1  rd_w:8  cd:1 .......... &rs1rs2w_srs3_chints_mscope_bcf
+@rs1rs2_srs3_chints_mscope_bcf  idc:3  mscope:3  chints:3 . bcf_b53:1 ...... srs3:5 ... rs2:7 . i2:1  c2:1  rs1:7 . i1:1  c1:1  rd:7 . cd:1 .......... &rs1rs2_srs3_chints_mscope_bcf
+@break                       ls:1 ..... break_addr:48 .......... &break
+@empty                      ................................................................ &empty
+@rs1                        ................................... rs1:7 . i1:1  c1:1 ................... &rs1
+@rs1w                       ................................... rs1_w:8  i1:1  c1:1 ................... &rs1w
+@imm                         imm32:32 ................................ &imm
+@imm3                       ............................. imm3:3 ................................ &imm3
+@simrsvd                     simrsvd:54 .......... &simrsvd
+@ctrl                       ... rpcv:1  rpc:24  bpc:24  brtype:2 .......... &ctrl
+
+# Instructions:
+
+iadd2            ...0000000000..0000000000.......0.........0.........0.0000000001 @rdrs1rs2_n1n2
+iadd             ...0000000000..0000000000.............................0000000010 @rdwrs1wrs2w_n1n2
+iaddi2           ................................00........0.........0.0000000011 @rdrs1imm_n1
+iaddi            ................................00....................0000000100 @rdwrs1wimm_n1
+lui              ................................0000000000000.......0.0000000101 @rdimm
+imadd2           ...000000000..........0.........0.........0.........0.0000000110 @rdrs1rs2rs3_n1n2n3
+imadd            ...000000000..........................................0000000111 @rdwrs1wrs2wrs3w_n1n2n3
+imaddw_s32       ...000000000..........0.............................0.0000001000 @rdrs1wrs2wrs3_n1n2n3
+imaddw_u32       ...000000000..........0.............................0.0000001001 @rdrs1wrs2wrs3_n1n2n3
+xor2             ...00000000.0000000000000.......0.........0.........0.0000001010 @rdrs1rs2_gbcf
+xor              ...00000000.0000000000000.............................0000001011 @rdwrs1wrs2w_gbcf
+xori2            ................................0.0.......0.........0.0000001100 @rdrs1imm_gbcf
+xori             ................................0.0...................0000001101 @rdwrs1wimm_gbcf
+or2              ...00000000.0000000000000.......0.........0.........0.0000001110 @rdrs1rs2_gbcf
+or               ...00000000.0000000000000.............................0000001111 @rdwrs1wrs2w_gbcf
+ori2             ................................0.0.......0.........0.0000010000 @rdrs1imm_gbcf
+ori              ................................0.0...................0000010001 @rdwrs1wimm_gbcf
+and2             ...00000000.0000000000000.......0.........0.........0.0000010010 @rdrs1rs2_gbcf
+and              ...00000000.0000000000000.............................0000010011 @rdwrs1wrs2w_gbcf
+andi2            ................................0.0.......0.........0.0000010100 @rdrs1imm_gbcf
+andi             ................................0.0...................0000010101 @rdwrs1wimm_gbcf
+islt2_s64        ...00000000.0000000000000.......0.........0.........0.0000010110 @rdrs1rs2_gbcf
+islt_s32         ...00000000.0000000000000.............................0000010111 @rdwrs1wrs2w_gbcf
+islti2_s64       ................................0.0.......0.........0.0000011000 @rdrs1imm_gbcf
+islti_s32        ................................0.0...................0000011001 @rdwrs1wimm_gbcf
+islt2_u64        ...00000000.0000000000000.......0.........0.........0.0000011010 @rdrs1rs2_gbcf
+islt_u32         ...00000000.0000000000000.............................0000011011 @rdwrs1wrs2w_gbcf
+islti2_u64       ................................0.0.......0.........0.0000011100 @rdrs1imm_gbcf
+islti_u32        ................................0.0...................0000011101 @rdwrs1wimm_gbcf
+islte2_s64       ...00000000.0000000000000.......0.........0.........0.0000011110 @rdrs1rs2_gbcf
+islte_s32        ...00000000.0000000000000.............................0000011111 @rdwrs1wrs2w_gbcf
+isltei2_s64      ................................0.0.......0.........0.0000100000 @rdrs1imm_gbcf
+isltei_s32       ................................0.0...................0000100001 @rdwrs1wimm_gbcf
+islte2_u64       ...00000000.0000000000000.......0.........0.........0.0000100010 @rdrs1rs2_gbcf
+islte_u32        ...00000000.0000000000000.............................0000100011 @rdwrs1wrs2w_gbcf
+isltei2_u64      ................................0.0.......0.........0.0000100100 @rdrs1imm_gbcf
+isltei_u32       ................................0.0...................0000100101 @rdwrs1wimm_gbcf
+iseq2_s64        ...00000000.0000000000000.......0.........0.........0.0000100110 @rdrs1rs2_gbcf
+iseq_s32         ...00000000.0000000000000.............................0000100111 @rdwrs1wrs2w_gbcf
+iseqi2_s64       ................................0.0.......0.........0.0000101000 @rdrs1imm_gbcf
+iseqi_s32        ................................0.0...................0000101001 @rdwrs1wimm_gbcf
+iseq2_u64        ...00000000.0000000000000.......0.........0.........0.0000101010 @rdrs1rs2_gbcf
+iseq_u32         ...00000000.0000000000000.............................0000101011 @rdwrs1wrs2w_gbcf
+iseqi2_u64       ................................0.0.......0.........0.0000101100 @rdrs1imm_gbcf
+iseqi_u32        ................................0.0...................0000101101 @rdwrs1wimm_gbcf
+ishl2            ...0000000000000000000000.................0.........0.0000101110 @rdrs1rs2w
+ishl             ...0000000000000000000000.............................0000101111 @rdwrs1wrs2w
+ishli2           ................................000.......0.........0.0000110000 @rdrs1imm
+ishli            ................................000...................0000110001 @rdwrs1wimm
+ishr2_u64        ...0000000000000000000000.................0.........0.0000110010 @rdrs1rs2w
+ishr_u32         ...0000000000000000000000.............................0000110011 @rdwrs1wrs2w
+ishr2_s64        ...0000000000000000000000.................0.........0.0000110100 @rdrs1rs2w
+ishr_s32         ...0000000000000000000000.............................0000110101 @rdwrs1wrs2w
+ishri2_u64       ................................000.......0.........0.0000110110 @rdrs1imm
+ishri_u32        ................................000...................0000110111 @rdwrs1wimm
+ishri2_s64       ................................000.......0.........0.0000111000 @rdrs1imm
+ishri_s32        ................................000...................0000111001 @rdwrs1wimm
+fmadd            ...0.......0.0........................................0000111010 @rdwrs1wrs2wrs3w_n1n3_dtype_rm
+fadd             ...0.......00..0000000000.............................0000111011 @rdwrs1wrs2w_n1n2_dtype_rm
+fmadd2           ...0.......0.0........0.........0.........0.........0.0000111100 @rdrs1rs2rs3_n1n3_dtype_rm
+fadd2            ...0.......00..0000000000.......0.........0.........0.0000111101 @rdrs1rs2_n1n2_dtype_rm
+fsgnj            ...0.......00.00000000000.............................0000111110 @rdwrs1wrs2w_n2_dtype_rm
+fsgnjx           ...0.......00..0000000000.............................0000111111 @rdwrs1wrs2w_n1n2_dtype_rm
+fsgnj2           ...0.......00.00000000000.......0.........0.........0.0001000000 @rdrs1rs2_n2_dtype_rm
+fsgnjx2          ...0.......00..0000000000.......0.........0.........0.0001000001 @rdrs1rs2_n1n2_dtype_rm
+fclass           ...0....000000000000000000000000000...................0001000010 @rdwrs1w_dtype
+fclass2          ...0....000000000000000000000000000.......0.........0.0001000011 @rdrs1_dtype
+fmin             ...0....00000000000000000.............................0001000100 @rdwrs1wrs2w_dtype
+fmax             ...0....00000000000000000.............................0001000101 @rdwrs1wrs2w_dtype
+fmin2            ...0....00000000000000000.......0.........0.........0.0001000110 @rdrs1rs2_dtype
+fmax2            ...0....00000000000000000.......0.........0.........0.0001000111 @rdrs1rs2_dtype
+feq              ...0....000.0000000000000.............................0001001000 @rdwrs1wrs2w_dtype_gbcf
+flt              ...0....000.0000000000000.............................0001001001 @rdwrs1wrs2w_dtype_gbcf
+fle              ...0....000.0000000000000.............................0001001010 @rdwrs1wrs2w_dtype_gbcf
+feq2             ...0....000.0000000000000.......0.........0.........0.0001001011 @rdrs1rs2_dtype_gbcf
+flt2             ...0....000.0000000000000.......0.........0.........0.0001001100 @rdrs1rs2_dtype_gbcf
+fle2             ...0....000.0000000000000.......0.........0.........0.0001001101 @rdrs1rs2_dtype_gbcf
+fcvt_type1       ...0....0000000000....0000000000000...................0001001110 @rdwrs1w_dido_rm
+fcvt_type2       ...0....0000000000....0000000000000.......0...........0001001111 @rdwrs1_dido_rm
+fcvt_type3       ...0....0000000000....0000000000000.................0.0001010000 @rdrs1w_dido_rm
+fcvt_type4       ...0....0000000000....0000000000000.......0.........0.0001010001 @rdrs1_dido_rm
+cpop             ...00000000000000000000000000000000.......0...........0001010010 @rdwrs1
+cpop_w           ...00000000000000000000000000000000...................0001010011 @rdwrs1w
+min              ...0000000000000000000000.......0.........0.........0.0001010100 @rdrs1rs2
+min_w            ...0000000000000000000000.............................0001010101 @rdwrs1wrs2w
+minu             ...0000000000000000000000.......0.........0.........0.0001010110 @rdrs1rs2
+minu_w           ...0000000000000000000000.............................0001010111 @rdwrs1wrs2w
+max              ...0000000000000000000000.......0.........0.........0.0001011000 @rdrs1rs2
+max_w            ...0000000000000000000000.............................0001011001 @rdwrs1wrs2w
+maxu             ...0000000000000000000000.......0.........0.........0.0001011010 @rdrs1rs2
+maxu_w           ...0000000000000000000000.............................0001011011 @rdwrs1wrs2w
+rol              ...0000000000000000000000.......0.........0.........0.0001011100 @rdrs1rs2
+rol_w            ...0000000000000000000000.............................0001011101 @rdwrs1wrs2w
+ror              ...0000000000000000000000.......0.........0.........0.0001011110 @rdrs1rs2
+ror_w            ...0000000000000000000000.............................0001011111 @rdwrs1wrs2w
+rori             ................................000.......0.........0.0001100000 @rdrs1imm
+rori_w           ................................000...................0001100001 @rdwrs1wimm
+shiadd           ...0........0000000000000.......0.........0.........0.0001100010 @rdrs1rs2imm8
+shiadd_wu        ...0........0000000000000.......0...................0.0001100011 @rdrs1wrs2imm8
+zext_d_h         ...00000000000000000000000000000000.................0.0001100100 @rdrs1w
+zext_w_h         ...00000000000000000000000000000000...................0001100101 @rdwrs1w
+sext_d_h         ...00000000000000000000000000000000.................0.0001100110 @rdrs1w
+sext_w_h         ...00000000000000000000000000000000...................0001100111 @rdwrs1w
+sext_d_w         ...00000000000000000000000000000000...................0001101000 @rdwrs1w
+csel2            ...000000000..0.......0.........0.........0.........0.0001101001 @rdrs1rs2rs3_n2n3
+csel             ...000000000..0.......................................0001101010 @rdwrs1wrs2wrs3w_n2n3
+cseli2           ................................000.......0.........0.0001101011 @rdrs1imm
+cseli            ................................000...................0001101100 @rdwrs1wimm
+exit             0000000000000000000000000000000000000000000000000000000001101101 @empty
+break            .00000................................................0001101110 @break
+sleep            00000000000000000000000000000000000.......0..0000000000001101111 @rs1
+sleepi           ................................00000000000000000000000001110000 @imm
+csrr             ................................0000000000000.........0001110001 @rdwimm
+csrr2            ................................0000000000000.......0.0001110010 @rdimm
+lds              0000............................00....................0001110011 @rdwrs1wimm24_dtype_bcf
+lds2             0000............................00..................0.0001110100 @rdrs1wimm24_dtype_bcf
+sts              ...0....0................000000000...................00001110101 @rs1wrs2wimm24_dtype_bcf
+sts2             ...0....0................000000000...................00001110110 @rs1wrs2imm24_dtype_bcf
+checkdc          00000000000000000000000000000...00000000000000000000000001110111 @imm3
+ldg_s8           .........0................................0...........0001111000 @rdwrs1imm24_chints_mscope_bcf
+ldg_u8           .........0................................0...........0001111001 @rdwrs1imm24_chints_mscope_bcf
+ldg_s16          .........0................................0...........0001111010 @rdwrs1imm24_chints_mscope_bcf
+ldg_u16          .........0................................0...........0001111011 @rdwrs1imm24_chints_mscope_bcf
+ldg_32           .........0................................0...........0001111100 @rdwrs1imm24_chints_mscope_bcf
+ldg2             .........0................................0.........0.0001111101 @rdrs1imm24_chints_mscope_bcf
+stg_s8           ......................................................0001111110 @rs1wrs2wimm24_chints_mscope_bcf
+stg_16           ......................................................0001111111 @rs1wrs2wimm24_chints_mscope_bcf
+stg_32           ......................................................0010000000 @rs1wrs2wimm24_chints_mscope_bcf
+stg2             ................................0.....................0010000001 @rs1wrs2imm24_chints_mscope_bcf
+b_clr            000...................................................0010000010 @ctrl
+b_set            000...................................................0010000011 @ctrl
+jal              ................................0000000000000.......0.0010000100 @rdimm
+jalr             ................................000.......0.........0.0010000101 @rdrs1imm
+auipc            ................................0000000000000.......0.0010000110 @rdimm
+syncweft         00000000000000000000000000000000000..........0000000000010000111 @rs1w
+syncwefti        ................................00000000000000000000000010001000 @imm
+syncweft_reduce_add ...0000000000000000000000.............................0010001001 @rdwrs1wrs2w
+syncwefti_reduce_add ................................000...................0010001010 @rdwrs1wimm
+syncweft_reduce_xor ...0000000000000000000000.............................0010001011 @rdwrs1wrs2w
+syncwefti_reduce_xor ................................000...................0010001100 @rdwrs1wimm
+syncweft_reduce_and ...0000000000000000000000.............................0010001101 @rdwrs1wrs2w
+syncwefti_reduce_and ................................000...................0010001110 @rdwrs1wimm
+syncweft_reduce_or ...0000000000000000000000.............................0010001111 @rdwrs1wrs2w
+syncwefti_reduce_or ................................000...................0010010000 @rdwrs1wimm
+syncweft_reduce_min ...0000000000000000000000.............................0010010001 @rdwrs1wrs2w
+syncwefti_reduce_min ................................000...................0010010010 @rdwrs1wimm
+syncweft_reduce_max ...0000000000000000000000.............................0010010011 @rdwrs1wrs2w
+syncwefti_reduce_max ................................000...................0010010100 @rdwrs1wimm
+syncweft_reduce_minu ...0000000000000000000000.............................0010010101 @rdwrs1wrs2w
+syncwefti_reduce_minu ................................000...................0010010110 @rdwrs1wimm
+syncweft_reduce_maxu ...0000000000000000000000.............................0010010111 @rdwrs1wrs2w
+syncwefti_reduce_maxu ................................000...................0010011000 @rdwrs1wimm
+syncweft_shuffle ...0000000000000000000000.............................0010011001 @rdwrs1wrs2w
+syncweft_shuffle_up ...0000000000000000000000.............................0010011010 @rdwrs1wrs2w
+syncweft_shuffle_down ...0000000000000000000000.............................0010011011 @rdwrs1wrs2w
+syncweft_shuffle_xor ...0000000000000000000000.............................0010011100 @rdwrs1wrs2w
+simrsvd          ......................................................0010011101 @simrsvd
+sadd2            ...0000000000..000000000000.....00000.....00000.....000010011110 @srdsrs1srs2_n1n2
+sadd             ...0000000000..000000000000......0000......0000......00010011111 @srdwsrs1wsrs2w_n1n2
+add2_sop         ...0000000000..000000000000.....000.......0...........0010100000 @rdrs1_srs2_n1n2
+add_sop          ...0000000000..000000000000......00...................0010100001 @rdwrs1w_srs2w_n1n2
+addw_sop         ...0000000000..000000000000.....000.................0.0010100010 @rdrs1w_srs2_n1n2
+sadd2_vop        ...0000000000..000000000000.....00000.....00000.....000010100011 @srdsrs1srs2_n1n2
+sadd_vop         ...0000000000..000000000000......0000......0000......00010100100 @srdwsrs1wsrs2w_n1n2
+lds_sop          ...0....00.0000000000000000......00...................0010100101 @rdwrs1w_srs2w_dtype_bcf
+lds2_sop         ...0....00.0000000000000000......00...................0010100110 @rdrs1w_srs2w_dtype_bcf
+sts_sop          ...0....00.000000......00........00...................0010100111 @rs1wrs2w_srs3w_dtype_bcf
+sts2_sop         ...0....00.000000......0000.....000...................0010101000 @rs1wrs2_srs3w_dtype_bcf
+ldg_sop_s8       .........0.0000000000000000.....000.......0...........0010101001 @rdwrs1_srs2_chints_mscope_bcf
+ldg_sop_u8       .........0.0000000000000000.....000.......0...........0010101010 @rdwrs1_srs2_chints_mscope_bcf
+ldg_sop_s16      .........0.0000000000000000.....000.......0...........0010101011 @rdwrs1_srs2_chints_mscope_bcf
+ldg_sop_u16      .........0.0000000000000000.....000.......0...........0010101100 @rdwrs1_srs2_chints_mscope_bcf
+ldg_sop_32       .........0.0000000000000000.....000.......0...........0010101101 @rdwrs1_srs2_chints_mscope_bcf
+ldg2_sop         .........0.0000000000000000.....000.......0.........0.0010101110 @rdrs1_srs2_chints_mscope_bcf
+stg_sop_s8       .........0.000000.....000.................0...........0010101111 @rs1rs2w_srs3_chints_mscope_bcf
+stg_sop_16       .........0.000000.....000.................0...........0010110000 @rs1rs2w_srs3_chints_mscope_bcf
+stg_sop_32       .........0.000000.....000.................0...........0010110001 @rs1rs2w_srs3_chints_mscope_bcf
+stg2_sop         .........0.000000.....000.......0.........0.........0.0010110010 @rs1rs2_srs3_chints_mscope_bcf
