@@ -24,5 +24,5 @@ zeus_softmmu_ss.add(files(
 
 zeus_ss.add_all(when: 'CONFIG_TCG', if_true: [zeus_tcg_ss])
 
-target_arch += {'metazeus': zeus_ss}
-target_softmmu_arch += {'metazeus': zeus_softmmu_ss}
+target_arch += {'zeus': zeus_ss}
+target_softmmu_arch += {'zeus': zeus_softmmu_ss}

@@ -1,0 +1,7 @@
+DEF_HELPER_4(mtia_zeus__simt_diverge_if, void, env, i32, i32, i64)
+DEF_HELPER_5(mtia_zeus__simt_diverge_if_else, void, env, i32, i32, i64, i64)
+DEF_HELPER_5(mtia_zeus__simt_loop, void, env, i32, i32, i64, i64)
+DEF_HELPER_1(mtia_zeus__simt_2nd_arm, void, env)
+DEF_HELPER_1(mtia_zeus__simt_if_arm_end, void, env)
+DEF_HELPER_1(mtia_zeus__simt_reconverge, i64, env)
+DEF_HELPER_2(mtia_zeus__simt_current_split_set_pc, void, env, i64)
