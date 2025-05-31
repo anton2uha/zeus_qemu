@@ -1,2 +1,2 @@
-config METAZEUS
+config ZEUS
     bool
