@@ -1,6 +1,6 @@
-/* MTIA SIMT CPU compare and set conditional flag instructions.
+/* SIMT CPU compare and set conditional flag instructions.
  *
- * Copyright (c) 2024 Meta Platforms, Inc.
+ * Copyright (c) 2025
  *
  *
  */

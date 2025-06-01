@@ -1,6 +1,6 @@
-/* MTIA SIMT CPU TCG translation functions.
+/* SIMT CPU TCG translation functions.
  *
- * Copyright (c) 2024 Meta Platforms, Inc.
+ * Copyright (c) 2025
  *
  *
  */

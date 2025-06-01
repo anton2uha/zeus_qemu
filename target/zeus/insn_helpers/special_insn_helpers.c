@@ -1,13 +1,13 @@
-/* MTIA SIMT CPU special instructions.
+/* SIMT CPU special instructions.
  *
- * Copyright (c) 2024 Meta Platforms, Inc.
+ * Copyright (c) .
  *
  *
  */
 #include "qemu/osdep.h"
 #include "cpu.h"
 #include "exec/helper-proto.h" // all helper functions prototypes
-#include "infra_asic_fpga/ip/mtia/olympus/isa/toolchain/isa/insn_simrsvd.h"
+//#include "isa/toolchain/isa/insn_simrsvd.h"
 
 typedef union SimMessage {
     uint64_t val;

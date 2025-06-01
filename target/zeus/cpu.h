@@ -1,6 +1,6 @@
-/* Meta SIMT CPU.
+/* SIMT CPU.
  *
- * Copyright (c) 2024 Meta Platforms, Inc.
+ * Copyright (c) 2025.
  *
  *
  */
@@ -10,7 +10,7 @@
 #include "qom/object.h"
 #include "exec/cpu-defs.h"
 #include "hw/core/cpu.h"
-#include "exec/memory.h"
+//#include "exec/memory.h"
 
 #include "simt_split.h"
 
@@ -104,7 +104,7 @@ void cpu_get_tb_cpu_state(
 int cpu_mmu_index(CPUZeusState *env, bool ifetch);
 
 
-#include "exec/cpu-all.h"
+//#include "exec/cpu-all.h"
 
 #define ZEUS_CPU_TYPE_SUFFIX "-" TYPE_ZEUS_CPU
 #define ZEUS_CPU_TYPE_NAME(model) model ZEUS_CPU_TYPE_SUFFIX

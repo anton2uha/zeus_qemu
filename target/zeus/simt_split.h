@@ -1,6 +1,6 @@
-/* Meta SIMT CPU divergence IF-ELSE split.
+/* SIMT CPU divergence IF-ELSE split.
  *
- * Copyright (c) 2024 Meta Platforms, Inc.
+ * Copyright (c) 2025
  *
  *
  */

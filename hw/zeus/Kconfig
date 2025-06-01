@@ -1,0 +1,6 @@
+config ZEUS_VIRT
+    bool
+    default n #FIXME y
+    #select SERIAL
+    #select SERIAL_ISA
+    select PLATFORM_BUS

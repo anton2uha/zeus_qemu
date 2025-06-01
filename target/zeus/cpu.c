@@ -1,6 +1,6 @@
 /**
- * @brief Meta SIMT CPU
- * @copyright 2024 Meta
+ * @brief SIMT CPU
+ * @copyright 2025
  */
 #include "qemu/osdep.h"
 #include "cpu.h"

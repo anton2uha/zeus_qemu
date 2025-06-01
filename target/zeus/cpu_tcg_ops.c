@@ -1,6 +1,6 @@
 /**
- * @brief Meta SIMT CPU TCG functions
- * @copyright 2024 Meta
+ * @brief SIMT CPU TCG functions
+ * @copyright 2025
  */
 #include "qemu/osdep.h"
 #include "cpu.h"

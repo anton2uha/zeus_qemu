@@ -1,6 +1,6 @@
-/* MTIA SIMT CPU arithmetic instructions.
+/* SIMT CPU arithmetic instructions.
  *
- * Copyright (c) 2024 Meta Platforms, Inc.
+ * Copyright (c) 2025.
  *
  *
  */

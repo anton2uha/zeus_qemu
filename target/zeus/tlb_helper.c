@@ -1,6 +1,6 @@
-/* MTIA SIMT CPU MMU TLB helpers.
+/* SIMT CPU MMU TLB helpers.
  *
- * Copyright (c) 2024 Meta Platforms, Inc.
+ * Copyright (c) 2025
  *
  *
  */

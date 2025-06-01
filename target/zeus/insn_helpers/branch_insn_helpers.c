@@ -1,6 +1,6 @@
-/* MTIA SIMT CPU branch instructions.
+/* SIMT CPU branch instructions.
  *
- * Copyright (c) 2024 Meta Platforms, Inc.
+ * Copyright (c) 2025.
  *
  *
  */

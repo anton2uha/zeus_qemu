@@ -1,6 +1,6 @@
-/* Meta SIMT CPU Deconvergence/Reconvergence stack.
+/* SIMT CPU Deconvergence/Reconvergence stack.
  *
- * Copyright (c) 2024 Meta Platforms, Inc.
+ * Copyright (c) 2025
  *
  *
  */

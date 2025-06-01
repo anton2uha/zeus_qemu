@@ -32,6 +32,7 @@
 #pragma GCC poison TARGET_SPARC64
 #pragma GCC poison TARGET_TRICORE
 #pragma GCC poison TARGET_XTENSA
+#pragma GCC poison TARGET_ZEUS
 
 #pragma GCC poison TARGET_HAS_BFLT
 #pragma GCC poison TARGET_NAME
