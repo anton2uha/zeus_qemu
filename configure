@@ -1431,6 +1431,7 @@ probe_target_compiler() {
     tricore) container_hosts=x86_64 ;;
     x86_64) container_hosts="aarch64 ppc64le x86_64" ;;
     xtensa*) container_hosts=x86_64 ;;
+	zeus) container_hosts="x86_64 aarch64" ;;
   esac
 
   for host in $container_hosts; do
