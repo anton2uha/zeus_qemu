@@ -9,13 +9,14 @@
 #include "exec/helper-proto.h" // all helper functions prototypes
 //#include "isa/toolchain/isa/insn_simrsvd.h"
 
-typedef union SimMessage {
+/*FIXME typedef union SimMessage {
     uint64_t val;
     InsnSimRsvd event;
-} SimMessage;
+} SimMessage;*/
 
 void helper_mtia_zeus__simrsvd(CPUZeusState *env, uint64_t message)
 {
+#if 0
     //printf("SIM message:%lx\n", message);
     SimMessage sim = {.val = message};
 
@@ -60,7 +61,7 @@ void helper_mtia_zeus__simrsvd(CPUZeusState *env, uint64_t message)
             }
         } break;
     }
-
+#endif
 }
 
 enum {CSRR_THREAD_ID = 4};

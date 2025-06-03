@@ -44,7 +44,7 @@ void cpu_get_tb_cpu_state(
     }
 }
 
-static void mtia_zeus_cpu_reset_hold(Object *obj)
+static void mtia_zeus_cpu_reset_hold(Object *obj, ResetType type)
 {
     CPUState *cpu_state = CPU(obj);
     ZeusCPU *cpu = ZEUS_CPU(cpu_state);
@@ -52,7 +52,7 @@ static void mtia_zeus_cpu_reset_hold(Object *obj)
     CPUZeusState *env = &cpu->env;
 
     if (cpu_class->parent_phases.hold) {
-        cpu_class->parent_phases.hold(obj);
+        cpu_class->parent_phases.hold(obj, type);
     }
 
     env->pc = env->resetvec;
@@ -97,7 +97,7 @@ static void mtia_zeus_cpu_instance_init(Object *obj)
 {
     ZeusCPU *cpu = ZEUS_CPU(obj);
 
-    cpu_set_cpustate_pointers(cpu);
+    //cpu_set_cpustate_pointers(cpu);
 
     mtia_zeus_cpu_define_properties(obj);
 
@@ -115,7 +115,7 @@ static const struct SysemuCPUOps mtia_zeus_cpu_sysemu_ops = {
     .get_phys_page_debug = NULL, //zeus_cpu_get_phys_page_debug,
 };
 
-static void mtia_zeus_cpu_class_init(ObjectClass *klass, void *data)
+static void mtia_zeus_cpu_class_init(ObjectClass *klass, const void *data)
 {
     ZeusCPUClass *zeus_class = ZEUS_CPU_CLASS(klass);
     CPUClass      *cpu_class = CPU_CLASS(klass);

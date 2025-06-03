@@ -8,7 +8,9 @@
 
 #include "cpu.h"
 #include "internals.h"
-#include "exec/exec-all.h"
+#include "exec/target_page.h"
+#include "exec/page-protection.h"
+#include "exec/cputlb.h"
 
 bool zeus_cpu_tlb_fill(
     CPUState *cs, vaddr address, int size,

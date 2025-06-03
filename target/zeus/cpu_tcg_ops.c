@@ -7,7 +7,7 @@
 #include "internals.h"
 #include "translate.h"
 #include "qapi/error.h"
-#include "hw/core/tcg-cpu-ops.h"
+#include "accel/tcg/cpu-ops.h"
 
 static void zeus_cpu_synchronize_from_tb(
     CPUState *cs,
