@@ -4,6 +4,7 @@
  */
 #include "qemu/osdep.h"
 #include "cpu.h"
+#include "cpu-qom.h"
 #include "qapi/error.h"
 
 #define MMU_CODE_IDX 0

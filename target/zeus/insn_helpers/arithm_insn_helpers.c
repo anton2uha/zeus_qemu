@@ -8,9 +8,9 @@
 #include "cpu.h"
 #include "exec/helper-proto.h" // all helper functions prototypes
 
-static uint64_t sign_extend32(uint32_t v) {
-    return ((v & (1 << 31))? (~0ul << 32):0ul) | v;
-}
+//static uint64_t sign_extend32(uint32_t v) {
+//    return ((v & (1 << 31))? (~0ul << 32):0ul) | v;
+//}
 
 void helper_mtia_zeus__lui(CPUZeusState* env, void* d_, uint32_t val, uint32_t hints)
 {

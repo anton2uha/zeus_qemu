@@ -8,9 +8,13 @@
 
 #include <stdint.h>
 #include "qom/object.h"
+#include "cpu-qom.h"
+#include "exec/cpu-common.h"
 #include "exec/cpu-defs.h"
 #include "hw/core/cpu.h"
 //#include "exec/memory.h"
+
+#define CPU_RESOLVING_TYPE TYPE_ZEUS_CPU
 
 #include "simt_split.h"
 
@@ -72,7 +76,7 @@ static inline ZeusSimtVergeStack* simt_stack(CPUZeusState *env) {
 struct ArchCPU {
     CPUState parent_obj;
 
-    CPUNegativeOffsetState neg;
+    //CPUNegativeOffsetState neg;
     CPUZeusState env;
 };
 
@@ -82,13 +86,6 @@ struct ZeusCPUClass {
     DeviceRealize parent_realize;
     ResettablePhases parent_phases;
 };
-
-#define TYPE_ZEUS_CPU "zeus-cpu"
-
-OBJECT_DECLARE_CPU_TYPE(
-    ZeusCPU,
-    ZeusCPUClass,
-    ZEUS_CPU)
 
 // see cpu_tcg_ops.c
 struct TCGCPUOps* mtia_zeus_cpu_get_tcg_ops(void);
@@ -104,8 +101,3 @@ void cpu_get_tb_cpu_state(
 int cpu_mmu_index(CPUZeusState *env, bool ifetch);
 
 
-//#include "exec/cpu-all.h"
-
-#define ZEUS_CPU_TYPE_SUFFIX "-" TYPE_ZEUS_CPU
-#define ZEUS_CPU_TYPE_NAME(model) model ZEUS_CPU_TYPE_SUFFIX
-#define CPU_RESOLVING_TYPE TYPE_ZEUS_CPU

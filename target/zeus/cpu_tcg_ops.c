@@ -4,6 +4,7 @@
  */
 #include "qemu/osdep.h"
 #include "cpu.h"
+#include "cpu-qom.h"
 #include "internals.h"
 #include "translate.h"
 #include "qapi/error.h"

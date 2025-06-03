@@ -9,6 +9,7 @@
 #include "qemu/qemu-print.h"
 #include "fpu/softfloat.h"
 #include "translate.h"
+#include "exec/translation-block.h"
 //#include "internals.h"
 #include "tcg/tcg-temp-internal.h"
 
@@ -48,7 +49,7 @@ static void zeus_tr_disas_log(
 )
 {
     qemu_log("IN: %s\n", lookup_symbol(dcbase->pc_first));
-    target_disas(logfile, cpu, dcbase->pc_first, dcbase->tb->size);
+    target_disas(logfile, cpu, dcbase);
 }
 
 static void zeus_tr_tb_start(DisasContextBase *dcbase, CPUState *cs)
