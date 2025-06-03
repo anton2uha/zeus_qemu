@@ -15,7 +15,7 @@ static bool gen_assert_not_reached(DisasContext *ctx, void *a)
     printf("ERROR: no translation for opcode %lx\n", ctx->opcode);
     g_assert_not_reached();
     TCGv message  = tcg_constant_tl(0/*=SIM_EXIT*/);
-    gen_helper_mtia_zeus__simrsvd(cpu_env, message);
+    gen_helper_zeus__simrsvd(cpu_env, message);
     return true;
 }
 
@@ -26,7 +26,7 @@ TRANS_ONE(lui)
     TCGv_i32 imm = tcg_constant_i32(a->imm32);
     TCGv_i32 hints = tcg_constant_i32(0);
 
-    gen_helper_mtia_zeus__lui(cpu_env, dst, imm, hints);
+    gen_helper_zeus__lui(cpu_env, dst, imm, hints);
 
     tcg_temp_free_ptr(dst);
 
@@ -41,7 +41,7 @@ TRANS_ONE(iadd2)
 
     TCGv_i32 hints = tcg_constant_i32(0);
 
-    gen_helper_mtia_zeus__iadd2(cpu_env, dst, src1, src2, hints);
+    gen_helper_zeus__iadd2(cpu_env, dst, src1, src2, hints);
 
     tcg_temp_free_ptr(dst);
     tcg_temp_free_ptr(src1);
@@ -59,7 +59,7 @@ TRANS_ONE(imadd2)
 
     TCGv_i32 hints = tcg_constant_i32(0);
 
-    gen_helper_mtia_zeus__imadd2(cpu_env, dst, src1, src2, src3, hints);
+    gen_helper_zeus__imadd2(cpu_env, dst, src1, src2, src3, hints);
 
     tcg_temp_free_ptr(dst);
     tcg_temp_free_ptr(src1);
@@ -79,7 +79,7 @@ TRANS_ONE(iaddi2)
     ZeusInsnParams params = {.n1 = a->n1_imm};
     TCGv_i32 insn_params = tcg_constant_i32(params.val);
 
-    gen_helper_mtia_zeus__iaddi2(cpu_env, dst, src1, src2, insn_params);
+    gen_helper_zeus__iaddi2(cpu_env, dst, src1, src2, insn_params);
 
     tcg_temp_free_ptr(dst);
     tcg_temp_free_ptr(src1);
@@ -112,15 +112,15 @@ static bool gen_zeus_insn_format_rdrs1imm(
     return true;
 }
 
-//TRANS_ONE(muli)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_mtia_zeus__muli); }
-//TRANS_ONE(muliu) { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_mtia_zeus__muliu); }
-TRANS_ONE(xori2)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_mtia_zeus__xori2); }
-TRANS_ONE(ori2)   { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_mtia_zeus__ori2); }
-TRANS_ONE(andi2)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_mtia_zeus__andi2); }
-//TRANS_ONE(ishli2)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_mtia_zeus__ishli2); }
-//TRANS_ONE(srli)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_mtia_zeus__srli); }
-//TRANS_ONE(srai)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_mtia_zeus__srai); }
-//TRANS_ONE(rori2)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_mtia_zeus__rori2); }
+//TRANS_ONE(muli)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_zeus__muli); }
+//TRANS_ONE(muliu) { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_zeus__muliu); }
+TRANS_ONE(xori2)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_zeus__xori2); }
+TRANS_ONE(ori2)   { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_zeus__ori2); }
+TRANS_ONE(andi2)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_zeus__andi2); }
+//TRANS_ONE(ishli2)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_zeus__ishli2); }
+//TRANS_ONE(srli)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_zeus__srli); }
+//TRANS_ONE(srai)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_zeus__srai); }
+//TRANS_ONE(rori2)  { return gen_zeus_insn_format_rdrs1imm(ctx, a, gen_helper_zeus__rori2); }
 
 
 TRANS(iadd         , gen_assert_not_reached)

@@ -45,7 +45,7 @@ void cpu_get_tb_cpu_state(
     }
 }
 
-static void mtia_zeus_cpu_reset_hold(Object *obj, ResetType type)
+static void zeus_cpu_reset_hold(Object *obj, ResetType type)
 {
     CPUState *cpu_state = CPU(obj);
     ZeusCPU *cpu = ZEUS_CPU(cpu_state);
@@ -65,7 +65,7 @@ static void mtia_zeus_cpu_reset_hold(Object *obj, ResetType type)
     zeus_verge_stack_push(simt_stack(&cpu->env), ~0ul, 0, 0, ZEUS_CPU_ALL_THREADS_MASK, false);
 }
 
-static void mtia_zeus_cpu_cpu_realize(DeviceState *dev, Error **errp)
+static void zeus_cpu_cpu_realize(DeviceState *dev, Error **errp)
 {
     CPUState *cpu_state = CPU(dev);
     ZeusCPUClass *zeus_class = ZEUS_CPU_GET_CLASS(dev);
@@ -85,7 +85,7 @@ static void mtia_zeus_cpu_cpu_realize(DeviceState *dev, Error **errp)
     zeus_class->parent_realize(dev, errp);
 }
 
-static void mtia_zeus_cpu_define_properties(Object *obj)
+static void zeus_cpu_define_properties(Object *obj)
 {
     ZeusCPU *cpu = ZEUS_CPU(obj);
 
@@ -94,29 +94,29 @@ static void mtia_zeus_cpu_define_properties(Object *obj)
     object_property_set_description(obj, "resetvec", "CPU cold start reset vector");
 }
 
-static void mtia_zeus_cpu_instance_init(Object *obj)
+static void zeus_cpu_instance_init(Object *obj)
 {
     ZeusCPU *cpu = ZEUS_CPU(obj);
 
     //cpu_set_cpustate_pointers(cpu);
 
-    mtia_zeus_cpu_define_properties(obj);
+    zeus_cpu_define_properties(obj);
 
     zeus_simt_splits_init(&cpu->env.simt_splits, ~0ul);
     cpu->env.split_id = 0;
 }
 
-static void mtia_zeus_cpu_instance_finalize(Object *obj)
+static void zeus_cpu_instance_finalize(Object *obj)
 {
 }
 
 #include "hw/core/sysemu-cpu-ops.h"
 
-static const struct SysemuCPUOps mtia_zeus_cpu_sysemu_ops = {
+static const struct SysemuCPUOps zeus_cpu_sysemu_ops = {
     .get_phys_page_debug = NULL, //zeus_cpu_get_phys_page_debug,
 };
 
-static void mtia_zeus_cpu_class_init(ObjectClass *klass, const void *data)
+static void zeus_cpu_class_init(ObjectClass *klass, const void *data)
 {
     ZeusCPUClass *zeus_class = ZEUS_CPU_CLASS(klass);
     CPUClass      *cpu_class = CPU_CLASS(klass);
@@ -125,22 +125,22 @@ static void mtia_zeus_cpu_class_init(ObjectClass *klass, const void *data)
 
     device_class_set_parent_realize(
         dev_class,
-        mtia_zeus_cpu_cpu_realize,
+        zeus_cpu_cpu_realize,
         &zeus_class->parent_realize
     );
     resettable_class_set_parent_phases(
         rst_class, NULL,
-        mtia_zeus_cpu_reset_hold,
+        zeus_cpu_reset_hold,
         NULL,
         &zeus_class->parent_phases
     );
 
-    cpu_class->sysemu_ops = &mtia_zeus_cpu_sysemu_ops;
+    cpu_class->sysemu_ops = &zeus_cpu_sysemu_ops;
 
 #ifdef CONFIG_TCG
-    cpu_class->tcg_ops = mtia_zeus_cpu_get_tcg_ops();
+    cpu_class->tcg_ops = zeus_cpu_get_tcg_ops();
 #else
-    #error "MTIA SIMT CPU supports only TCG"
+    #error "SIMT CPU supports only TCG"
 #endif
 }
 
@@ -148,10 +148,10 @@ static const TypeInfo zeus_cpu_types[] = {
     {
         .name              = TYPE_ZEUS_CPU,
         .parent            = TYPE_CPU,
-        .class_init        = mtia_zeus_cpu_class_init,
+        .class_init        = zeus_cpu_class_init,
         .class_size        = sizeof(ZeusCPUClass),
-        .instance_init     = mtia_zeus_cpu_instance_init,
-        .instance_finalize = mtia_zeus_cpu_instance_finalize,
+        .instance_init     = zeus_cpu_instance_init,
+        .instance_finalize = zeus_cpu_instance_finalize,
         .instance_size     = sizeof(ZeusCPU),
         .abstract          = false, //@lesikigor check
     },

@@ -14,7 +14,7 @@
     InsnSimRsvd event;
 } SimMessage;*/
 
-void helper_mtia_zeus__simrsvd(CPUZeusState *env, uint64_t message)
+void helper_zeus__simrsvd(CPUZeusState *env, uint64_t message)
 {
 #if 0
     //printf("SIM message:%lx\n", message);
@@ -66,7 +66,7 @@ void helper_mtia_zeus__simrsvd(CPUZeusState *env, uint64_t message)
 
 enum {CSRR_THREAD_ID = 4};
 
-void helper_mtia_zeus__csrr(CPUZeusState* env, void* d_, uint32_t csr_id, uint32_t hints)
+void helper_zeus__csrr(CPUZeusState* env, void* d_, uint32_t csr_id, uint32_t hints)
 {
     uint32_t* dst = d_;
     switch (csr_id) {

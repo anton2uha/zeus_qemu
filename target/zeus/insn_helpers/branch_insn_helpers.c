@@ -42,7 +42,7 @@ void simt_splits_add(CPUZeusState* env, uint64_t pc, uint64_t bpc, uint64_t rpc,
         ZEUS_SIMT_VERGE_HINT_ELSE_ARM, thread_mask, false);
 }
 
-void helper_mtia_zeus__simt_diverge_if_else(CPUZeusState* env, uint32_t simt_thread_mask,
+void helper_zeus__simt_diverge_if_else(CPUZeusState* env, uint32_t simt_thread_mask,
     uint32_t brtype, uint64_t bpc, uint64_t rpc)
 {
     uint32_t negate = brtype >> 16;
@@ -72,7 +72,7 @@ static void cpu_interrupt_exittb(CPUState *cs)
 #endif
 }
 
-void helper_mtia_zeus__simt_if_arm_end(CPUZeusState* env)
+void helper_zeus__simt_if_arm_end(CPUZeusState* env)
 {
     //zeus_verge_stack_pop(simt_stack(env));
 
@@ -86,14 +86,14 @@ void helper_mtia_zeus__simt_if_arm_end(CPUZeusState* env)
     cpu_interrupt_exittb(env_cpu(env));
 }
 
-void helper_mtia_zeus__simt_current_split_set_pc(CPUZeusState* env, uint64_t pc)
+void helper_zeus__simt_current_split_set_pc(CPUZeusState* env, uint64_t pc)
 {
     DBG_VERGE("[%u] SPLIT SET PC:%lx\n", env->split_id, pc);
 
     env->simt_splits.splits[env->split_id].pc = pc;
 }
 
-void helper_mtia_zeus__simt_diverge_if(CPUZeusState* env, uint32_t simt_thread_mask,
+void helper_zeus__simt_diverge_if(CPUZeusState* env, uint32_t simt_thread_mask,
    uint32_t brtype, uint64_t rpc)
 {
     uint32_t negate = brtype >> 16;
@@ -110,12 +110,12 @@ void helper_mtia_zeus__simt_diverge_if(CPUZeusState* env, uint32_t simt_thread_m
     zeus_verge_stack_push(simt_stack(env), env->pc, rpc, 0, current_mask & simt_thread_mask, false);
 }
 
-void helper_mtia_zeus__simt_2nd_arm(CPUZeusState* env)
+void helper_zeus__simt_2nd_arm(CPUZeusState* env)
 {
     DBG_VERGE("[%u] BEGIN ELSE-ARM PC:%lx\n", env->split_id, env->pc);
 }
 
-uint64_t helper_mtia_zeus__simt_reconverge(CPUZeusState* env)
+uint64_t helper_zeus__simt_reconverge(CPUZeusState* env)
 {
     // @lesikigor: We can jump at the divergence point from outside of if/for,
     // in such case we should not pop stack; check that top of stack entry.rpc == env->pc.
@@ -152,7 +152,7 @@ uint64_t helper_mtia_zeus__simt_reconverge(CPUZeusState* env)
     return 0;
 }
 
-void helper_mtia_zeus__simt_loop(CPUZeusState* env, uint32_t simt_thread_mask,
+void helper_zeus__simt_loop(CPUZeusState* env, uint32_t simt_thread_mask,
     uint32_t brtype, uint64_t rpc, uint64_t bpc)
 {
     uint32_t negate = brtype >> 16;

@@ -88,7 +88,7 @@ struct ZeusCPUClass {
 };
 
 // see cpu_tcg_ops.c
-struct TCGCPUOps* mtia_zeus_cpu_get_tcg_ops(void);
+struct TCGCPUOps* zeus_cpu_get_tcg_ops(void);
 
 
 void cpu_get_tb_cpu_state(

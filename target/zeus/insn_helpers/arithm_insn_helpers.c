@@ -12,7 +12,7 @@
 //    return ((v & (1 << 31))? (~0ul << 32):0ul) | v;
 //}
 
-void helper_mtia_zeus__lui(CPUZeusState* env, void* d_, uint32_t val, uint32_t hints)
+void helper_zeus__lui(CPUZeusState* env, void* d_, uint32_t val, uint32_t hints)
 {
     //printf("execute LUI\n");
     uint64_t* d = d_;
@@ -22,7 +22,7 @@ void helper_mtia_zeus__lui(CPUZeusState* env, void* d_, uint32_t val, uint32_t h
     }
 }
 
-void helper_mtia_zeus__iadd2(CPUZeusState* env, void* d_, void* s1_, void* s2_, uint32_t hints)
+void helper_zeus__iadd2(CPUZeusState* env, void* d_, void* s1_, void* s2_, uint32_t hints)
 {
     //printf("execute ADD\n");
     uint64_t* d = d_;
@@ -34,7 +34,7 @@ void helper_mtia_zeus__iadd2(CPUZeusState* env, void* d_, void* s1_, void* s2_, 
     }
 }
 
-void helper_mtia_zeus__iaddi2(CPUZeusState* env, void* d_, void* s1_, uint64_t s2, uint32_t params_)
+void helper_zeus__iaddi2(CPUZeusState* env, void* d_, void* s1_, uint64_t s2, uint32_t params_)
 {
     //printf("execute ADDI\n");
     int64_t* d = d_;
@@ -47,7 +47,7 @@ void helper_mtia_zeus__iaddi2(CPUZeusState* env, void* d_, void* s1_, uint64_t s
     }
 }
 
-void helper_mtia_zeus__imadd2(CPUZeusState* env, void* d_, void* s1_, void* s2_, void* s3_, uint32_t hints)
+void helper_zeus__imadd2(CPUZeusState* env, void* d_, void* s1_, void* s2_, void* s3_, uint32_t hints)
 {
     //printf("execute MUL\n");
     uint64_t* d = d_;
@@ -61,7 +61,7 @@ void helper_mtia_zeus__imadd2(CPUZeusState* env, void* d_, void* s1_, void* s2_,
 }
 
 /*
-void helper_mtia_zeus__muli(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
+void helper_zeus__muli(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
 {
     //printf("execute MULI\n");
     int64_t* d = d_;
@@ -73,7 +73,7 @@ void helper_mtia_zeus__muli(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_
     }
 }
 
-void helper_mtia_zeus__muliu(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
+void helper_zeus__muliu(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
 {
     //printf("execute MULIU\n");
     uint64_t* d = d_;
@@ -85,7 +85,7 @@ void helper_mtia_zeus__muliu(CPUZeusState* env, void* d_, void* s1_, uint32_t s2
     }
 }
 */
-void helper_mtia_zeus__andi2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
+void helper_zeus__andi2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
 {
     //printf("execute ANDI\n");
     uint64_t* d = d_;
@@ -97,7 +97,7 @@ void helper_mtia_zeus__andi2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2
     }
 }
 
-void helper_mtia_zeus__ori2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
+void helper_zeus__ori2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
 {
     //printf("execute ORI\n");
     uint64_t* d = d_;
@@ -109,7 +109,7 @@ void helper_mtia_zeus__ori2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_
     }
 }
 
-void helper_mtia_zeus__xori2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
+void helper_zeus__xori2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
 {
     //printf("execute XORI\n");
     uint64_t* d = d_;
@@ -122,7 +122,7 @@ void helper_mtia_zeus__xori2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2
 }
 
 /*
-void helper_mtia_zeus__ishli2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
+void helper_zeus__ishli2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
 {
     //printf("execute SLLI\n");
     uint64_t* d = d_;
@@ -134,7 +134,7 @@ void helper_mtia_zeus__ishli2(CPUZeusState* env, void* d_, void* s1_, uint32_t s
     }
 }
 
-void helper_mtia_zeus__srli(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
+void helper_zeus__srli(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
 {
     //printf("execute SRLI\n");
     uint64_t* d = d_;
@@ -146,7 +146,7 @@ void helper_mtia_zeus__srli(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_
     }
 }
 
-void helper_mtia_zeus__srai(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
+void helper_zeus__srai(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
 {
     //printf("execute SRLI\n");
     int64_t* d = d_;
@@ -158,7 +158,7 @@ void helper_mtia_zeus__srai(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_
     }
 }
 
-void helper_mtia_zeus__rori2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
+void helper_zeus__rori2(CPUZeusState* env, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
 {
     //printf("execute RORI\n");
     uint64_t* d = d_;

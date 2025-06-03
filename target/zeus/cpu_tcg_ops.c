@@ -99,6 +99,6 @@ static struct TCGCPUOps g_instance_zeus_cpu_tcg_ops = {
     .do_transaction_failed = zeus_cpu_do_transaction_failed,
 };
 
-struct TCGCPUOps* mtia_zeus_cpu_get_tcg_ops(void) {
+struct TCGCPUOps* zeus_cpu_get_tcg_ops(void) {
     return &g_instance_zeus_cpu_tcg_ops;
 }

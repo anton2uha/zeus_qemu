@@ -16,7 +16,7 @@ static bool trans_zeus_beqz_brtype_loop(DisasContext *ctx, arg_b_clr *a, bool ne
     TCGv_i32 brtype = tcg_constant_i32(2 | (negate << 16));
     TCGv_i64 runtime_rpc = tcg_constant_i64(rpc);
     TCGv_i64 runtime_bpc = tcg_constant_i64(bpc);
-    gen_helper_mtia_zeus__simt_loop(cpu_env, cpu_bcf, brtype, runtime_rpc, runtime_bpc);
+    gen_helper_zeus__simt_loop(cpu_env, cpu_bcf, brtype, runtime_rpc, runtime_bpc);
 
     TCGLabel *l = gen_new_label();
 
@@ -50,7 +50,7 @@ static bool trans_zeus_beqz_brtype_if(DisasContext *ctx, arg_b_clr *a, bool nega
     gen_set_pc_imm(ctx, ctx->base.pc_next);
     TCGv_i32 brtype = tcg_constant_i32(0 | (negate << 16));
     TCGv_i64 runtime_rpc = tcg_constant_i64(rpc);
-    gen_helper_mtia_zeus__simt_diverge_if(cpu_env, cpu_bcf, brtype, runtime_rpc);
+    gen_helper_zeus__simt_diverge_if(cpu_env, cpu_bcf, brtype, runtime_rpc);
 
     return true;
 }
@@ -82,7 +82,7 @@ static bool trans_zeus_beqz_brtype_if_else(DisasContext *ctx, arg_b_clr *a, bool
     TCGv_i32 brtype = tcg_constant_i32(1 | (negate << 16));
     TCGv_i64 runtime_bpc = tcg_constant_i64(bpc);
     TCGv_i64 runtime_rpc = tcg_constant_i64(rpc);
-    gen_helper_mtia_zeus__simt_diverge_if_else(cpu_env, cpu_bcf, brtype,
+    gen_helper_zeus__simt_diverge_if_else(cpu_env, cpu_bcf, brtype,
         runtime_bpc, runtime_rpc);
 
     return true;
@@ -159,7 +159,7 @@ TRANS_ONE(jal)
     );
 
     if (if_else_ptr) {
-        gen_helper_mtia_zeus__simt_if_arm_end(cpu_env);
+        gen_helper_zeus__simt_if_arm_end(cpu_env);
         //gen_goto_tb(ctx, 0/*jump slot*/, jump_params.start_of_else_pc); // goto else-arm
         gen_goto_tb(ctx, 0/*jump slot*/, jump_target_addr);
         ctx->base.is_jmp = DISAS_SIMT;

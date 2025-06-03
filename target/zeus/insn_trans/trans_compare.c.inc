@@ -31,9 +31,9 @@ static bool gen_zeus_compare_and_set_imm(
     return true;
 }
 
-TRANS_ONE(iseqi2_u64) { return gen_zeus_compare_and_set_imm(ctx, a, gen_helper_mtia_zeus__iseqi2_u64); }
-TRANS_ONE(islti2_u64) { return gen_zeus_compare_and_set_imm(ctx, a, gen_helper_mtia_zeus__islti2_u64); }
-TRANS_ONE(isltei2_u64){ return gen_zeus_compare_and_set_imm(ctx, a, gen_helper_mtia_zeus__isltei2_u64); }
+TRANS_ONE(iseqi2_u64) { return gen_zeus_compare_and_set_imm(ctx, a, gen_helper_zeus__iseqi2_u64); }
+TRANS_ONE(islti2_u64) { return gen_zeus_compare_and_set_imm(ctx, a, gen_helper_zeus__islti2_u64); }
+TRANS_ONE(isltei2_u64){ return gen_zeus_compare_and_set_imm(ctx, a, gen_helper_zeus__isltei2_u64); }
 
 typedef void (*zeus_compare_and_set_helper_t)(
     TCGv_env env, TCGv_ptr bcf, TCGv_ptr d,
@@ -66,6 +66,6 @@ static bool gen_zeus_compare_and_set(
     return true;
 }
 
-TRANS_ONE(iseq2_s64) { return gen_zeus_compare_and_set(ctx, a, gen_helper_mtia_zeus__iseq2_s64); }
-TRANS_ONE(islt2_s64) { return gen_zeus_compare_and_set(ctx, a, gen_helper_mtia_zeus__islt2_s64); }
-TRANS_ONE(islte2_s64){ return gen_zeus_compare_and_set(ctx, a, gen_helper_mtia_zeus__islte2_s64); }
+TRANS_ONE(iseq2_s64) { return gen_zeus_compare_and_set(ctx, a, gen_helper_zeus__iseq2_s64); }
+TRANS_ONE(islt2_s64) { return gen_zeus_compare_and_set(ctx, a, gen_helper_zeus__islt2_s64); }
+TRANS_ONE(islte2_s64){ return gen_zeus_compare_and_set(ctx, a, gen_helper_zeus__islte2_s64); }

@@ -70,7 +70,7 @@ static void gen_goto_tb(DisasContext *ctx, int n, target_ulong dest)
 {
     TCGv_i64 runtime_dest = tcg_temp_new_i64();
     tcg_gen_movi_tl(runtime_dest, dest);
-    gen_helper_mtia_zeus__simt_current_split_set_pc(cpu_env, runtime_dest);
+    gen_helper_zeus__simt_current_split_set_pc(cpu_env, runtime_dest);
     tcg_temp_free_i64(runtime_dest);
 
     if (translator_use_goto_tb(&ctx->base, dest)) {
@@ -114,7 +114,7 @@ static void zeus_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
             switch (verge->type) {
                 case ZEUS_TRANS_VERGE_RECONVERGE: {
                     TCGv_i64 else_arm_end = tcg_temp_new_i64();
-                    gen_helper_mtia_zeus__simt_reconverge(else_arm_end, cpu_env);
+                    gen_helper_zeus__simt_reconverge(else_arm_end, cpu_env);
                     TCGLabel *lbl = gen_new_label();
                     TCGv_i64 zero = tcg_constant_i64(0);
                     tcg_gen_brcond_i64(TCG_COND_EQ, zero, else_arm_end, lbl);
@@ -123,7 +123,7 @@ static void zeus_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
                     tcg_temp_free_i64(else_arm_end);
                 } break;
                 case ZEUS_TRANS_VERGE_2ND_ARM:
-                    gen_helper_mtia_zeus__simt_2nd_arm(cpu_env); break;
+                    gen_helper_zeus__simt_2nd_arm(cpu_env); break;
                 default: g_assert_not_reached(); break;
             }
         }

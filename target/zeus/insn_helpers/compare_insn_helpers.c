@@ -8,7 +8,7 @@
 #include "cpu.h"
 #include "exec/helper-proto.h" // all helper functions prototypes
 
-#define MTIA_ZEUS_CMP_SET(OP_, env, bcf_, d_, s1_, s2_, params_) \
+#define ZEUS_CMP_SET(OP_, env, bcf_, d_, s1_, s2_, params_) \
     uint32_t* bcf = bcf_; \
     uint64_t *d = d_, *s1 = s1_, *s2 = s2_; \
     ZeusInsnParams params = {.val = params_}; \
@@ -20,17 +20,17 @@
         } \
     }
 
-void helper_mtia_zeus__iseq2_s64(CPUZeusState* env, void* bcf_, void* d_, void* s1_, void* s2_, uint32_t params_) {
-    MTIA_ZEUS_CMP_SET(==, env, bcf_, d_, s1_, s2_, params_)
+void helper_zeus__iseq2_s64(CPUZeusState* env, void* bcf_, void* d_, void* s1_, void* s2_, uint32_t params_) {
+    ZEUS_CMP_SET(==, env, bcf_, d_, s1_, s2_, params_)
 }
-void helper_mtia_zeus__islt2_s64(CPUZeusState* env, void* bcf_, void* d_, void* s1_, void* s2_, uint32_t params_) {
-    MTIA_ZEUS_CMP_SET(<, env, bcf_, d_, s1_, s2_, params_)
+void helper_zeus__islt2_s64(CPUZeusState* env, void* bcf_, void* d_, void* s1_, void* s2_, uint32_t params_) {
+    ZEUS_CMP_SET(<, env, bcf_, d_, s1_, s2_, params_)
 }
-void helper_mtia_zeus__islte2_s64(CPUZeusState* env, void* bcf_, void* d_, void* s1_, void* s2_, uint32_t params_) {
-    MTIA_ZEUS_CMP_SET(<=, env, bcf_, d_, s1_, s2_, params_)
+void helper_zeus__islte2_s64(CPUZeusState* env, void* bcf_, void* d_, void* s1_, void* s2_, uint32_t params_) {
+    ZEUS_CMP_SET(<=, env, bcf_, d_, s1_, s2_, params_)
 }
 
-void helper_mtia_zeus__iseqi2_u64(CPUZeusState* env, void* bcf_, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
+void helper_zeus__iseqi2_u64(CPUZeusState* env, void* bcf_, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
 {
     //printf("execute SEQUI\n");
     uint32_t* bcf = bcf_;
@@ -52,7 +52,7 @@ void helper_mtia_zeus__iseqi2_u64(CPUZeusState* env, void* bcf_, void* d_, void*
     }
 }
 
-void helper_mtia_zeus__islti2_u64(CPUZeusState* env, void* bcf_, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
+void helper_zeus__islti2_u64(CPUZeusState* env, void* bcf_, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
 {
     //printf("execute SLTUI\n");
     uint32_t* bcf = bcf_;
@@ -74,7 +74,7 @@ void helper_mtia_zeus__islti2_u64(CPUZeusState* env, void* bcf_, void* d_, void*
     }
 }
 
-void helper_mtia_zeus__isltei2_u64(CPUZeusState* env, void* bcf_, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
+void helper_zeus__isltei2_u64(CPUZeusState* env, void* bcf_, void* d_, void* s1_, uint32_t s2_, uint32_t params_)
 {
     //printf("execute SLTEUI\n");
     uint32_t* bcf = bcf_;
