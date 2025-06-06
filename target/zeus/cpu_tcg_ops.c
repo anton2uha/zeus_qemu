@@ -90,6 +90,7 @@ static void zeus_cpu_do_transaction_failed(
 
 static struct TCGCPUOps g_instance_zeus_cpu_tcg_ops = {
     .initialize            = zeus_cpu_translate_init,
+    .translate_code        = zeus_cpu_translate_code,
     .synchronize_from_tb   = zeus_cpu_synchronize_from_tb,
     .restore_state_to_opc  = zeus_cpu_restore_state_to_opc,
 

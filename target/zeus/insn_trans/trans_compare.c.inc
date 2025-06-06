@@ -20,9 +20,9 @@ static bool gen_zeus_compare_and_set_imm(
     TCGv_ptr bcf = tcg_temp_ebb_new_ptr();
     TCGv_i32 src2 = tcg_constant_i32(a->imm32);
 
-    tcg_gen_addi_ptr(bcf, cpu_env, bcf_ofs);
+    tcg_gen_addi_ptr(bcf, tcg_env, bcf_ofs);
 
-    gen_helper_func(cpu_env, bcf, dst, src1, src2, insn_params);
+    gen_helper_func(tcg_env, bcf, dst, src1, src2, insn_params);
 
     tcg_temp_free_ptr(bcf);
     tcg_temp_free_ptr(dst);
@@ -54,9 +54,9 @@ static bool gen_zeus_compare_and_set(
     TCGv_i32 insn_params = tcg_constant_i32(params.val);
 
     TCGv_ptr bcf = tcg_temp_ebb_new_ptr();
-    tcg_gen_addi_ptr(bcf, cpu_env, bcf_ofs);
+    tcg_gen_addi_ptr(bcf, tcg_env, bcf_ofs);
 
-    gen_helper_func(cpu_env, bcf, dst, src1, src2, insn_params);
+    gen_helper_func(tcg_env, bcf, dst, src1, src2, insn_params);
 
     tcg_temp_free_ptr(bcf);
     tcg_temp_free_ptr(dst);

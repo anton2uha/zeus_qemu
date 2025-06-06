@@ -6,16 +6,16 @@
     offsetof(CPUZeusState, zero[SRC_DST_]): \
     offsetof(CPUZeusState, gpr.r##n_##xThr[a->reg_name_]); \
     TCGv_ptr var_name_ = tcg_temp_ebb_new_ptr(); \
-    tcg_gen_addi_ptr(var_name_, cpu_env, var_name_##_ofs);
+    tcg_gen_addi_ptr(var_name_, tcg_env, var_name_##_ofs);
 
 enum {SRC = 0, DST = 1};
 
 static bool gen_assert_not_reached(DisasContext *ctx, void *a)
 {
-    printf("ERROR: no translation for opcode %lx\n", ctx->opcode);
+    printf("ERROR: no translation for opcode %llx\n", ctx->opcode);
     g_assert_not_reached();
     TCGv message  = tcg_constant_tl(0/*=SIM_EXIT*/);
-    gen_helper_zeus__simrsvd(cpu_env, message);
+    gen_helper_zeus__simrsvd(tcg_env, message);
     return true;
 }
 
@@ -26,7 +26,7 @@ TRANS_ONE(lui)
     TCGv_i32 imm = tcg_constant_i32(a->imm32);
     TCGv_i32 hints = tcg_constant_i32(0);
 
-    gen_helper_zeus__lui(cpu_env, dst, imm, hints);
+    gen_helper_zeus__lui(tcg_env, dst, imm, hints);
 
     tcg_temp_free_ptr(dst);
 
@@ -41,7 +41,7 @@ TRANS_ONE(iadd2)
 
     TCGv_i32 hints = tcg_constant_i32(0);
 
-    gen_helper_zeus__iadd2(cpu_env, dst, src1, src2, hints);
+    gen_helper_zeus__iadd2(tcg_env, dst, src1, src2, hints);
 
     tcg_temp_free_ptr(dst);
     tcg_temp_free_ptr(src1);
@@ -59,7 +59,7 @@ TRANS_ONE(imadd2)
 
     TCGv_i32 hints = tcg_constant_i32(0);
 
-    gen_helper_zeus__imadd2(cpu_env, dst, src1, src2, src3, hints);
+    gen_helper_zeus__imadd2(tcg_env, dst, src1, src2, src3, hints);
 
     tcg_temp_free_ptr(dst);
     tcg_temp_free_ptr(src1);
@@ -79,7 +79,7 @@ TRANS_ONE(iaddi2)
     ZeusInsnParams params = {.n1 = a->n1_imm};
     TCGv_i32 insn_params = tcg_constant_i32(params.val);
 
-    gen_helper_zeus__iaddi2(cpu_env, dst, src1, src2, insn_params);
+    gen_helper_zeus__iaddi2(tcg_env, dst, src1, src2, insn_params);
 
     tcg_temp_free_ptr(dst);
     tcg_temp_free_ptr(src1);
@@ -104,7 +104,7 @@ static bool gen_zeus_insn_format_rdrs1imm(
     ZeusInsnParams params;// = {.i1 = a->i1};
     TCGv_i32 insn_params = tcg_constant_i32(params.val);
 
-    gen_helper_func(cpu_env, dst, src1, src2, insn_params);
+    gen_helper_func(tcg_env, dst, src1, src2, insn_params);
 
     tcg_temp_free_ptr(dst);
     tcg_temp_free_ptr(src1);

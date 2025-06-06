@@ -10,7 +10,7 @@
 #include "fpu/softfloat.h"
 #include "translate.h"
 #include "exec/translation-block.h"
-//#include "internals.h"
+#include "internals.h"
 #include "tcg/tcg-temp-internal.h"
 
 #define DISAS_STOP        DISAS_TARGET_0
@@ -22,6 +22,7 @@
 static TCGv cpu_pc;
 static TCGv_i32 cpu_bcf;
 
+#if 0
 static void generate_exception(DisasContext *ctx, int excp)
 {
     g_assert_not_reached();
@@ -29,7 +30,7 @@ static void generate_exception(DisasContext *ctx, int excp)
     //gen_helper_raise_exception(cpu_env, tcg_constant_i32(excp));
     ctx->base.is_jmp = DISAS_NORETURN;
 }
-
+#endif
 static void zeus_tr_init_disas_context(
     DisasContextBase *dcbase,
     CPUState *cs
@@ -42,7 +43,7 @@ static void zeus_tr_init_disas_context(
     //}
 }
 
-static void zeus_tr_disas_log(
+static bool zeus_tr_disas_log(
     const DisasContextBase *dcbase,
     CPUState *cpu,
     FILE *logfile
@@ -50,6 +51,7 @@ static void zeus_tr_disas_log(
 {
     qemu_log("IN: %s\n", lookup_symbol(dcbase->pc_first));
     target_disas(logfile, cpu, dcbase);
+    return true;
 }
 
 static void zeus_tr_tb_start(DisasContextBase *dcbase, CPUState *cs)
@@ -70,7 +72,7 @@ static void gen_goto_tb(DisasContext *ctx, int n, target_ulong dest)
 {
     TCGv_i64 runtime_dest = tcg_temp_new_i64();
     tcg_gen_movi_tl(runtime_dest, dest);
-    gen_helper_zeus__simt_current_split_set_pc(cpu_env, runtime_dest);
+    gen_helper_zeus__simt_current_split_set_pc(tcg_env, runtime_dest);
     tcg_temp_free_i64(runtime_dest);
 
     if (translator_use_goto_tb(&ctx->base, dest)) {
@@ -91,15 +93,18 @@ static uint64_t sign_extend32(uint32_t v) {
     return ((v & (1 << 31))? (~0ul << 32):0ul) | v;
 }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
 #include "decode-insns.c.inc" // decode()
 #include "insn_trans/trans_arithmetic.c.inc"
 #include "insn_trans/trans_compare.c.inc"
 #include "insn_trans/trans_branch.c.inc"
 #include "insn_trans/trans_special.c.inc"
+#pragma GCC diagnostic pop
 
 static void zeus_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
 {
-    CPUZeusState *env = cs->env_ptr;
+    CPUZeusState *env = cpu_env(cs);
     DisasContext *ctx = container_of(dcbase, DisasContext, base);
 
     ctx->opcode = translator_ldq(env, &ctx->base, ctx->base.pc_next);
@@ -114,7 +119,7 @@ static void zeus_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
             switch (verge->type) {
                 case ZEUS_TRANS_VERGE_RECONVERGE: {
                     TCGv_i64 else_arm_end = tcg_temp_new_i64();
-                    gen_helper_zeus__simt_reconverge(else_arm_end, cpu_env);
+                    gen_helper_zeus__simt_reconverge(else_arm_end, tcg_env);
                     TCGLabel *lbl = gen_new_label();
                     TCGv_i64 zero = tcg_constant_i64(0);
                     tcg_gen_brcond_i64(TCG_COND_EQ, zero, else_arm_end, lbl);
@@ -123,7 +128,7 @@ static void zeus_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
                     tcg_temp_free_i64(else_arm_end);
                 } break;
                 case ZEUS_TRANS_VERGE_2ND_ARM:
-                    gen_helper_zeus__simt_2nd_arm(cpu_env); break;
+                    gen_helper_zeus__simt_2nd_arm(tcg_env); break;
                 default: g_assert_not_reached(); break;
             }
         }
@@ -133,8 +138,8 @@ static void zeus_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
     if (!decode(ctx, ctx->opcode)) {
         qemu_log_mask(
             LOG_UNIMP, "Error: unknown opcode. "
-            TARGET_FMT_lx ": 0x%lx\n",
-            ctx->base.pc_next, ctx->opcode);
+            TARGET_FMT_lx ": 0x%"PRIx64"\n", 
+            (uint64_t)ctx->base.pc_next, ctx->opcode);
         g_assert_not_reached();
         //generate_exception(ctx, EXCCODE_INE);
     }
@@ -181,7 +186,7 @@ static void zeus_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
     tcg_gen_insn_start(ctx->base.pc_next);
 }
 
-
+__attribute__((unused))
 static const TranslatorOps zeus_translation_ops_instance = {
     .init_disas_context = zeus_tr_init_disas_context,
     .tb_start           = zeus_tr_tb_start,
@@ -194,16 +199,16 @@ static const TranslatorOps zeus_translation_ops_instance = {
 static
 GHashTable* trans_verge_map_instance;
 
-// declared in exec/translator.h
-void gen_intermediate_code(
+
+void zeus_cpu_translate_code(
     CPUState *cs,
     TranslationBlock *tb,
     int *max_insns,
-    target_ulong pc,
+    vaddr pc,
     void *host_pc
 )
 {
-    printf("gen_intermediate_code cs:%p tb:%p pc:%lx host_pc:%p\n", cs, tb, pc, host_pc);
+    printf("gen_intermediate_code cs:%p tb:%p pc:%"PRIx64" host_pc:%p\n", cs, tb, (uint64_t)pc, host_pc);
 
     DisasContext ctx;
     ctx.verge_map = trans_verge_map_instance;
@@ -217,12 +222,12 @@ void zeus_cpu_translate_init(void)
     trans_verge_map_instance = zeus_trans_verge_map_new();
 
     cpu_pc = tcg_global_mem_new(
-        cpu_env,
+        tcg_env,
         offsetof(CPUZeusState, pc),
         "pc"
     );
     cpu_bcf = tcg_global_mem_new_i32(
-        cpu_env,
+        tcg_env,
         offsetof(CPUZeusState, bcf),
         "bcf"
     );
