@@ -12,7 +12,7 @@ enum {SRC = 0, DST = 1};
 
 static bool gen_assert_not_reached(DisasContext *ctx, void *a)
 {
-    printf("ERROR: no translation for opcode %llx\n", ctx->opcode);
+    printf("ERROR: no translation for opcode %"PRIx64"\n", ctx->opcode);
     g_assert_not_reached();
     TCGv message  = tcg_constant_tl(0/*=SIM_EXIT*/);
     gen_helper_zeus__simrsvd(tcg_env, message);
@@ -101,7 +101,7 @@ static bool gen_zeus_insn_format_rdrs1imm(
     ZEUS_PTR_R(64, src1, rs1, SRC);
     TCGv_i32 src2 = tcg_constant_i32(a->imm32);
 
-    ZeusInsnParams params;// = {.i1 = a->i1};
+    ZeusInsnParams params = {.i1 = a->i1};
     TCGv_i32 insn_params = tcg_constant_i32(params.val);
 
     gen_helper_func(tcg_env, dst, src1, src2, insn_params);

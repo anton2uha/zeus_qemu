@@ -76,9 +76,11 @@ static inline ZeusSimtVergeStack* simt_stack(CPUZeusState *env) {
 struct ArchCPU {
     CPUState parent_obj;
 
-    //CPUNegativeOffsetState neg;
     CPUZeusState env;
 };
+
+static_assert(offsetof(ArchCPU, parent_obj) == 0, "parent_obj must be first");
+static_assert(offsetof(ArchCPU, env) == sizeof(CPUState), "env offset must be sizeof(CPUState)");
 
 struct ZeusCPUClass {
     CPUClass parent_class;
