@@ -7,11 +7,11 @@
 #pragma once
 
 #include <stdint.h>
-#include "qom/object.h"
-#include "cpu-qom.h"
+//#include "qom/object.h"
 #include "exec/cpu-common.h"
 #include "exec/cpu-defs.h"
-#include "hw/core/cpu.h"
+#include "cpu-qom.h"
+//#include "hw/core/cpu.h"
 //#include "exec/memory.h"
 
 #define CPU_RESOLVING_TYPE TYPE_ZEUS_CPU
@@ -38,7 +38,8 @@ typedef union ZeusInsnParams {
     };
 } ZeusInsnParams;
 
-#define SIMD_VEC_ATTR(count, type)  __attribute__ ((vector_size (count*sizeof(type))))
+// FIXME need to work around assertion that offsetof(env)==sizeof(CPUState)
+#define SIMD_VEC_ATTR(count, type)  //__attribute__ ((vector_size (count*sizeof(type))))
 
 typedef uint32_t U32xTHR SIMD_VEC_ATTR(ZEUS_CPU_NR_THREADS, uint32_t);
 typedef uint64_t U64xTHR SIMD_VEC_ATTR(ZEUS_CPU_NR_THREADS, uint64_t);
@@ -78,6 +79,16 @@ struct ArchCPU {
 
     CPUZeusState env;
 };
+
+// hack to show size in compile time as error message
+//char checker(int);
+//char check_sizeof[sizeof(CPUState)]={checker(&check_sizeof)};
+//char check_sizeof[sizeof(CPUNegativeOffsetState)]={checker(&check_sizeof)};
+//char check_sizeof[offsetof(CPUState, neg)]={checker(&check_sizeof)};
+//char check_sizeof[offsetof(CPUState, neg_align)]={checker(&check_sizeof)};
+//char check_sizeof[offsetof(ArchCPU, env)]={checker(&check_sizeof)};
+//#define MY_OFFSETOF(TYPE, ELEMENT) ((size_t)&(((TYPE *)0)->ELEMENT))
+//char check_sizeof[MY_OFFSETOF(ArchCPU, env)]={checker(&check_sizeof)};
 
 static_assert(offsetof(ArchCPU, parent_obj) == 0, "parent_obj must be first");
 static_assert(offsetof(ArchCPU, env) == sizeof(CPUState), "env offset must be sizeof(CPUState)");
