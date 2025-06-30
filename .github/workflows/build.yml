@@ -24,7 +24,7 @@ jobs:
           --disable-vnc --disable-vnc-jpeg --disable-vnc-sasl --disable-virglrenderer \
           --disable-xkbcommon --disable-gtk --disable-auth-pam --disable-bzip2 \
           --target-list=zeus-softmmu \
-          cd /tmp/zeus/qemu && make -j8
+          cd /tmp/zeus/qemu && make -j8 && ./qemu-system-zeus -M help
 
 
 
