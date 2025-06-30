@@ -15,8 +15,8 @@ void zeus_load_program(ZeusVirtMachineState *board, const char *filename)
     g_assert_nonnull(filename);
 
     hwaddr pentry G_GNUC_UNUSED = 0;
-#if 0
-    ssize_t prg_size G_GNUC_UNUSED = load_elf_ram(
+
+    ssize_t prg_size G_GNUC_UNUSED = load_elf_as(
         /* filename     */ filename,
         /* elf_note     */ NULL,
         /* translate    */ NULL,
@@ -29,12 +29,12 @@ void zeus_load_program(ZeusVirtMachineState *board, const char *filename)
         /* elf_machine  */ EM_NONE,
         /* clear_lsb    */ 1,
         /* data_swab    */ 0,
-        /* address space*/ address_space,
+        /* address space*/ //address_space,
         /* load_rom     */ false
     );
 
     g_assert(prg_size > 0);
-#endif
+
 g_assert_not_reached();
     //qemu_log("Program %s loaded, size:%ld entry:%lx\n", filename, prg_size, pentry);
 }

@@ -9,6 +9,8 @@
 OBJECT_DECLARE_CPU_TYPE(ZeusCPU, ZeusCPUClass, ZEUS_CPU)
 
 #define ZEUS_CPU_TYPE_SUFFIX "-" TYPE_ZEUS_CPU
-#define ZEUS_CPU_TYPE_NAME(model) model ZEUS_CPU_TYPE_SUFFIX
+//#define ZEUS_CPU_TYPE_NAME(model) (model ZEUS_CPU_TYPE_SUFFIX)
+//FIXME for now we just use zeus-cpu
+#define ZEUS_CPU_TYPE_NAME(model) TYPE_ZEUS_CPU
 
 #endif
