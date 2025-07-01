@@ -23,7 +23,7 @@ jobs:
           --disable-curses --disable-opengl --disable-sdl --disable-glusterfs --disable-sdl-image \
           --disable-vnc --disable-vnc-jpeg --disable-vnc-sasl --disable-virglrenderer \
           --disable-xkbcommon --disable-gtk --disable-auth-pam --disable-bzip2 \
-          --target-list=zeus-softmmu --prefix=/tmp/zeus/qemu --libdir=/tmp/zeus/qemu --bindir=/tmp/zeus/qemu --enable-werror \
+          --target-list=zeus-softmmu --prefix=/tmp/zeus/qemu --libdir=/tmp/zeus/qemu --bindir=/tmp/zeus/qemu --enable-werror
           cd /tmp/zeus/qemu && make -j8 && ./qemu-system-zeus -M help
 
 
