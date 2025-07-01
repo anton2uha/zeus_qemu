@@ -18,7 +18,7 @@ jobs:
           sudo apt update
           sudo apt install libglib2.0-dev
           mkdir -p /tmp/zeus/qemu
-          SRC_DIR = $PWD
+          SRC_DIR=$PWD
           cd /tmp/zeus/qemu && $SRC_DIR/configure \
           --disable-docs --without-default-features \
           --disable-curses --disable-opengl --disable-sdl --disable-glusterfs --disable-sdl-image \
