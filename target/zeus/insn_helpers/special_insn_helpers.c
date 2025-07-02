@@ -7,16 +7,16 @@
 #include "qemu/osdep.h"
 #include "cpu.h"
 #include "exec/helper-proto.h" // all helper functions prototypes
-//#include "isa/toolchain/isa/insn_simrsvd.h"
+#include "insn_simrsvd.h"
 
-/*FIXME typedef union SimMessage {
+typedef union SimMessage {
     uint64_t val;
     InsnSimRsvd event;
-} SimMessage;*/
+} SimMessage;
 
 void helper_zeus__simrsvd(CPUZeusState *env, uint64_t message)
 {
-#if 0
+//#if 0
     //printf("SIM message:%lx\n", message);
     SimMessage sim = {.val = message};
 
@@ -38,7 +38,7 @@ void helper_zeus__simrsvd(CPUZeusState *env, uint64_t message)
                         uint64_t val1 = env->gpr.r64[reg1_id >> 1][thr];
                         uint64_t val2 = env->gpr.r64[reg2_id >> 1][thr];
                         if (val1 != val2) {
-                            printf("thread:%u assert r[%u]=%lx == r[%u]=%lx\n", thr, reg1_id, val1, reg2_id, val2);
+                            printf("thread:%u assert r[%u]=%"PRIx64" == r[%u]=%"PRIx64"\n", thr, reg1_id, val1, reg2_id, val2);
                             exit(1);
                         }
                     }
@@ -61,7 +61,7 @@ void helper_zeus__simrsvd(CPUZeusState *env, uint64_t message)
             }
         } break;
     }
-#endif
+//#endif
 }
 
 enum {CSRR_THREAD_ID = 4};

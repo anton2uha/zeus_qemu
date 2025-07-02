@@ -8,6 +8,8 @@
 #include "elf.h"
 #include "target/zeus/cpu.h"
 #include "hw/zeus/virt.h"
+#include "system/address-spaces.h"
+#include <inttypes.h>
 
 static
 void zeus_load_program(ZeusVirtMachineState *board, const char *filename)
@@ -29,14 +31,13 @@ void zeus_load_program(ZeusVirtMachineState *board, const char *filename)
         /* elf_machine  */ EM_NONE,
         /* clear_lsb    */ 1,
         /* data_swab    */ 0,
-        /* address space*/ //address_space,
-        /* load_rom     */ false
+        /* address space*/ &address_space_memory//address_space_memory//address_space,
+        ///* load_rom     */ false
     );
 
     g_assert(prg_size > 0);
 
-g_assert_not_reached();
-    //qemu_log("Program %s loaded, size:%ld entry:%lx\n", filename, prg_size, pentry);
+    qemu_log("Program %s loaded, size:%ld entry:%"PRIx64"\n", filename, prg_size, pentry);
 }
 
 static void zeus_virt_machine_init(MachineState *machine)
