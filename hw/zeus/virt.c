@@ -31,7 +31,7 @@ void zeus_load_program(ZeusVirtMachineState *board, const char *filename)
         /* elf_machine  */ EM_NONE,
         /* clear_lsb    */ 1,
         /* data_swab    */ 0,
-        /* address space*/ &address_space_memory//address_space_memory//address_space,
+        /* address space*/ &address_space_memory
         ///* load_rom     */ false
     );
 

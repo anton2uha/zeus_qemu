@@ -16,7 +16,6 @@ typedef union SimMessage {
 
 void helper_zeus__simrsvd(CPUZeusState *env, uint64_t message)
 {
-//#if 0
     //printf("SIM message:%lx\n", message);
     SimMessage sim = {.val = message};
 
@@ -61,7 +60,6 @@ void helper_zeus__simrsvd(CPUZeusState *env, uint64_t message)
             }
         } break;
     }
-//#endif
 }
 
 enum {CSRR_THREAD_ID = 4};
