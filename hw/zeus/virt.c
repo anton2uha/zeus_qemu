@@ -6,6 +6,8 @@
 #include "qemu/log.h"
 #include "hw/loader.h"
 #include "elf.h"
+#include "hw/qdev-properties.h"
+#include "system/reset.h"
 #include "target/zeus/cpu.h"
 #include "hw/zeus/virt.h"
 #include "system/address-spaces.h"
@@ -40,6 +42,26 @@ void zeus_load_program(ZeusVirtMachineState *board, const char *filename)
     qemu_log("Program %s loaded, size:%ld entry:%"PRIx64"\n", filename, prg_size, pentry);
 }
 
+static void zeus_cpu_realize(
+    ZeusCPU *cpu,
+    const char *prg_filename
+)
+{
+    uint64_t resetvec = 0;
+
+    if (prg_filename) {
+        union {Elf64_Ehdr h64; Elf32_Ehdr h32;} hdr;
+        bool is64;
+        load_elf_hdr(prg_filename, &hdr, &is64, NULL); //FIXME check error if !elf
+        resetvec = hdr.h64.e_entry;
+    }
+    printf("CPU reset vector: %lx\n", resetvec);
+    qdev_prop_set_uint64(DEVICE(cpu), "resetvec", resetvec);
+
+    qemu_register_reset((void*)cpu_reset, cpu);
+    qdev_realize(DEVICE(cpu), NULL, &error_abort);
+}
+
 static void zeus_virt_machine_init(MachineState *machine)
 {
     ZeusVirtMachineState *board = ZEUS_VIRT_MACHINE(machine);
@@ -64,7 +86,16 @@ static void zeus_virt_machine_init(MachineState *machine)
         0x1000,
         &board->dram
     );
-    
+
+    object_initialize_child(
+        OBJECT(board),
+        "cpu",
+        &board->cpu,
+        TYPE_ZEUS_CPU
+    );
+
+    zeus_cpu_realize(&board->cpu, machine->kernel_filename);
+
     if (machine->kernel_filename) {
         zeus_load_program(board, machine->kernel_filename);
     }

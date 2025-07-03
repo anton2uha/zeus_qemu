@@ -98,6 +98,8 @@ static struct TCGCPUOps g_instance_zeus_cpu_tcg_ops = {
     .cpu_exec_interrupt    = zeus_cpu_exec_interrupt,
     .do_interrupt          = zeus_cpu_do_interrupt,
     .do_transaction_failed = zeus_cpu_do_transaction_failed,
+
+    .mttcg_supported       = true,
 };
 
 struct TCGCPUOps* zeus_cpu_get_tcg_ops(void) {

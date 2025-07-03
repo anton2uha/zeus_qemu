@@ -1,6 +1,7 @@
 #pragma once
 
 #include "qemu/osdep.h"
+#include "target/zeus/cpu.h"
 
 /* Machine name string.
  *
@@ -19,5 +20,7 @@ typedef struct ZeusVirtMachineState {
 
     // DRAM installed on the board.
     MemoryRegion dram;
+    
+    ZeusCPU cpu;
 
 } ZeusVirtMachineState;
