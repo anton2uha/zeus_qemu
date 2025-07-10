@@ -11,6 +11,7 @@
 #include "exec/cpu-common.h"
 #include "exec/cpu-defs.h"
 #include "cpu-qom.h"
+#include "accel/tcg/cpu-ops.h"
 //#include "hw/core/cpu.h"
 //#include "exec/memory.h"
 
@@ -102,7 +103,8 @@ struct ZeusCPUClass {
 
 // see cpu_tcg_ops.c
 struct TCGCPUOps* zeus_cpu_get_tcg_ops(void);
-
+bool zeus_cpu_has_work(CPUState *cs);
+TCGTBCPUState zeus_get_tb_cpu_state(CPUState *cs);
 
 void cpu_get_tb_cpu_state(
     CPUZeusState *env,
@@ -111,6 +113,6 @@ void cpu_get_tb_cpu_state(
     uint32_t *flags
 );
 
-int cpu_mmu_index(CPUZeusState *env, bool ifetch);
+int cpu_mmu_index(CPUState *cs, bool ifetch);
 
 

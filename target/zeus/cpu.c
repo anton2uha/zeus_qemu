@@ -10,7 +10,7 @@
 #define MMU_CODE_IDX 0
 #define MMU_DATA_IDX 0
 
-int cpu_mmu_index(CPUZeusState *env, bool ifetch)
+int cpu_mmu_index(CPUState *cs, bool ifetch)
 {
     return ifetch ? MMU_CODE_IDX : MMU_DATA_IDX;
 }
@@ -110,9 +110,25 @@ static void zeus_cpu_instance_finalize(Object *obj)
 {
 }
 
+/* Here we are checking to see if the CPU should wake up from HALT.*/
+bool zeus_cpu_has_work(CPUState *cs)
+{
+    //return cs->interrupt_request & (CPU_INTERRUPT_HARD
+    return false;
+}
+
+TCGTBCPUState zeus_get_tb_cpu_state(CPUState *cs)
+{
+    CPUZeusState *env = cpu_env(cs);
+    uint32_t flags = 0; //& ENV_FLAG_TB_MASK;
+
+    return (TCGTBCPUState){ .pc = env->pc, .flags = flags };
+}
+
 #include "hw/core/sysemu-cpu-ops.h"
 
 static const struct SysemuCPUOps zeus_cpu_sysemu_ops = {
+    .has_work = zeus_cpu_has_work,
     .get_phys_page_debug = NULL, //zeus_cpu_get_phys_page_debug,
 };
 

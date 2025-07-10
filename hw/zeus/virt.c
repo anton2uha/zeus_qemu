@@ -55,7 +55,7 @@ static void zeus_cpu_realize(
         load_elf_hdr(prg_filename, &hdr, &is64, NULL); //FIXME check error if !elf
         resetvec = hdr.h64.e_entry;
     }
-    printf("CPU reset vector: %lx\n", resetvec);
+    printf("CPU reset vector: %"PRIx64"\n", resetvec);
     qdev_prop_set_uint64(DEVICE(cpu), "resetvec", resetvec);
 
     qemu_register_reset((void*)cpu_reset, cpu);

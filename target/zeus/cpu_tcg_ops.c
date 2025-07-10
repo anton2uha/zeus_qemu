@@ -93,6 +93,11 @@ static struct TCGCPUOps g_instance_zeus_cpu_tcg_ops = {
     .translate_code        = zeus_cpu_translate_code,
     .synchronize_from_tb   = zeus_cpu_synchronize_from_tb,
     .restore_state_to_opc  = zeus_cpu_restore_state_to_opc,
+    .cpu_exec_halt         = zeus_cpu_has_work,
+    .cpu_exec_reset        = cpu_reset,
+    .pointer_wrap          = cpu_pointer_wrap_uint32,
+    .get_tb_cpu_state      = zeus_get_tb_cpu_state,
+    .mmu_index             = cpu_mmu_index,
 
     .tlb_fill              = zeus_cpu_tlb_fill,
     .cpu_exec_interrupt    = zeus_cpu_exec_interrupt,
