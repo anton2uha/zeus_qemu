@@ -39,11 +39,16 @@ typedef union ZeusInsnParams {
     };
 } ZeusInsnParams;
 
+#if 0
 // FIXME need to work around assertion that offsetof(env)==sizeof(CPUState)
-#define SIMD_VEC_ATTR(count, type)  //__attribute__ ((vector_size (count*sizeof(type))))
+#define SIMD_VEC_ATTR(count, type)  __attribute__ ((vector_size (count*sizeof(type))))
 
 typedef uint32_t U32xTHR SIMD_VEC_ATTR(ZEUS_CPU_NR_THREADS, uint32_t);
 typedef uint64_t U64xTHR SIMD_VEC_ATTR(ZEUS_CPU_NR_THREADS, uint64_t);
+#else
+typedef uint32_t U32xTHR[ZEUS_CPU_NR_THREADS];
+typedef uint64_t U64xTHR[ZEUS_CPU_NR_THREADS];
+#endif
 
 // Regs from different threads form x86 SIMD vector:
 // avx512 = {r1[thr0], r1[thr1],... r1[thr31]}
@@ -61,7 +66,7 @@ typedef struct CPUArchState {
 
     uint32_t bcf; // 32 branch conditional flags, one per thread
 
-    SimtCpuGpRegs gpr;
+    SimtCpuGpRegs gpr QEMU_ALIGNED(16);
     uint64_t zero[2][ZEUS_CPU_NR_THREADS];
 
     ZeusSimtSplits simt_splits;
